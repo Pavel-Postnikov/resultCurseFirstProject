@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { ExerciseRenderer } from "@/components/exercises";
 import type { ExerciseAnswer, EvaluationResult } from "@/components/exercises";
-import { milestone2TestExercises } from "@/lib/exercises";
+import { milestone3TestExercises } from "@/lib/exercises";
 import styles from "./page.module.css";
 
 interface SubmittedItem {
@@ -15,7 +15,7 @@ export default function TestPage() {
   const [submitted, setSubmitted] = useState<Record<string, SubmittedItem>>({});
 
   const answeredCount = Object.keys(submitted).length;
-  const totalCount = milestone2TestExercises.length;
+  const totalCount = milestone3TestExercises.length;
 
   const { score, maxScore } = useMemo(() => {
     return Object.values(submitted).reduce(
@@ -34,8 +34,8 @@ export default function TestPage() {
       <header className={styles.header}>
         <h1>Test-режим</h1>
         <p>
-          Milestone 2: первые два типа упражнений подключены к общей архитектуре и работают в едином
-          режиме проверки.
+          Milestone 3: все 6 типов упражнений подключены к общей архитектуре, включая частичную
+          оценку и DnD-компоненты.
         </p>
       </header>
 
@@ -52,7 +52,7 @@ export default function TestPage() {
       </section>
 
       <section className={styles.exerciseList}>
-        {milestone2TestExercises.map((exercise) => (
+        {milestone3TestExercises.map((exercise) => (
           <ExerciseRenderer
             key={exercise.id}
             exercise={exercise}
@@ -69,11 +69,11 @@ export default function TestPage() {
 
       {answeredCount === totalCount ? (
         <section className={styles.summary}>
-          <h2>Промежуточный итог Milestone 2</h2>
+          <h2>Промежуточный итог Milestone 3</h2>
           <p>
             Набрано: {score} / {maxScore}
           </p>
-          <p>На следующем этапе подключим остальные типы упражнений и расширенный подсчет.</p>
+          <p>На следующем этапе добавим TestSession, финальный экран и рекомендации по темам.</p>
         </section>
       ) : null}
     </main>

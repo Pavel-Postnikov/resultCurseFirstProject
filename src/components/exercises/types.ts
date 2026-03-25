@@ -64,8 +64,6 @@ export type Exercise =
   | (ExerciseBase & { type: "order-steps"; payload: OrderStepsPayload })
   | (ExerciseBase & { type: "crossword"; payload: CrosswordPayload });
 
-export type SupportedExercise = Extract<Exercise, { type: "multiple-choice" | "true-false" }>;
-
 export interface MultipleChoiceAnswer {
   selectedOptionIds: string[];
 }
@@ -74,7 +72,29 @@ export interface TrueFalseAnswer {
   value: boolean;
 }
 
-export type ExerciseAnswer = MultipleChoiceAnswer | TrueFalseAnswer;
+export interface FillTheBlankAnswer {
+  values: Record<string, string>;
+}
+
+export interface MatchPairsAnswer {
+  pairs: Record<string, string>;
+}
+
+export interface OrderStepsAnswer {
+  orderedStepIds: string[];
+}
+
+export interface CrosswordAnswer {
+  values: Record<string, string>;
+}
+
+export type ExerciseAnswer =
+  | MultipleChoiceAnswer
+  | TrueFalseAnswer
+  | FillTheBlankAnswer
+  | MatchPairsAnswer
+  | OrderStepsAnswer
+  | CrosswordAnswer;
 
 export interface EvaluationResult {
   isCorrect: boolean;

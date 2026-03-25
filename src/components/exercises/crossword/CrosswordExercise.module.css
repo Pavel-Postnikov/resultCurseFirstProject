@@ -1,0 +1,100 @@
+.layout {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.warningBox {
+  border: 1px solid color-mix(in srgb, var(--state-wrong) 45%, var(--border));
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: color-mix(in srgb, var(--state-wrong) 6%, white);
+}
+
+.warningTitle {
+  margin: 0;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.warningList {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: var(--text-muted);
+  display: grid;
+  gap: 4px;
+}
+
+.grid {
+  display: grid;
+  gap: 4px;
+  width: fit-content;
+}
+
+.row {
+  display: grid;
+  gap: 4px;
+}
+
+.cell,
+.emptyCell {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.cell {
+  border: 1px solid var(--border);
+  background: white;
+}
+
+.intersection {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--state-correct) 30%, transparent);
+}
+
+.conflict {
+  border-color: var(--state-wrong);
+  background: color-mix(in srgb, var(--state-wrong) 8%, white);
+}
+
+.emptyCell {
+  background: #dbe4f0;
+}
+
+.clues {
+  display: grid;
+  gap: 10px;
+}
+
+.clueItem {
+  display: grid;
+  gap: 6px;
+}
+
+.clueText {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.clueItem input {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 9px;
+  background: white;
+}
+
+.lengthHint {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.hint {
+  margin: 0;
+  color: color-mix(in srgb, var(--state-wrong) 70%, var(--text));
+  font-size: 13px;
+}

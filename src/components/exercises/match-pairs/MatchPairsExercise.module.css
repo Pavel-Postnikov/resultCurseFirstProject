@@ -1,0 +1,75 @@
+.layout {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.column {
+  display: grid;
+  gap: 10px;
+}
+
+.column h4 {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.leftRow {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+  background: var(--surface-muted);
+}
+
+.leftText {
+  margin: 0;
+  font-weight: 600;
+}
+
+.dropZone {
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  padding: 8px;
+  min-height: 38px;
+  background: white;
+  color: var(--text-muted);
+}
+
+.selectLabel {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.selectLabel select {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px;
+  background: white;
+}
+
+.draggableList {
+  display: grid;
+  gap: 8px;
+}
+
+.draggableItem {
+  text-align: left;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: white;
+  cursor: grab;
+}
+
+.draggableItem:disabled {
+  cursor: not-allowed;
+}
+
+.used {
+  opacity: 0.55;
+}

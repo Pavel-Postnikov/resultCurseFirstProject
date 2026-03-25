@@ -11,11 +11,11 @@ export default function HomePage() {
   return (
     <main className={styles.page}>
       <section className={styles.hero}>
-        <p className={styles.kicker}>Milestone 1</p>
+        <p className={styles.kicker}>Milestone 3</p>
         <h1>Frontend Interview Portal</h1>
         <p>
-          Каркас проекта готов: статьи на MDX, отдельный test-режим и страница результатов. Дальше
-          добавляем интерактивные компоненты и систему оценки.
+          Реализована архитектура интерактивов и 6 типов упражнений в двух режимах: inline внутри
+          статей и test с общим прогрессом.
         </p>
         <div className={styles.actions}>
           <Link href="/articles" className={styles.primary}>

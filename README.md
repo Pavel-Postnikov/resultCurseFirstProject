@@ -6,6 +6,7 @@
 
 - Milestone 1: `Выполнено` (каркас Next.js + TS + MDX).
 - Milestone 2: `Выполнено` (архитектура упражнений + 2 типа с evaluate и тестами).
+- Milestone 3: `Выполнено` (остальные 4 типа, частичная оценка, DnD для MatchPairs/OrderSteps).
 
 ## Технологии
 
@@ -32,7 +33,7 @@ npm run dev
 - `/articles/js-core`
 - `/articles/react-ts`
 - `/articles/browser-interview`
-- `/test` — test-режим Milestone 2 (первые 2 типа упражнений)
+- `/test` — test-режим Milestone 3 (6 типов упражнений, прогресс и промежуточный итог)
 - `/results` — каркас страницы результатов
 
 ## Что уже сделано
@@ -42,13 +43,15 @@ npm run dev
 - Зафиксирован формат `exercise.id`: `<articleSlug>-ex-<nn>`.
 - Добавлены команды для линтинга, форматирования и тестов.
 - Реализованы `types.ts`, `ExerciseRenderer`, common-компоненты упражнений.
-- Реализованы 2 типа: `TrueFalse`, `MultipleChoice` в режимах `inline` и `test`.
-- Реализованы `evaluateTrueFalse` и `evaluateMultipleChoice`.
-- Добавлены unit-тесты для evaluate-функций (`Vitest`).
+- Реализованы все 6 типов: `TrueFalse`, `MultipleChoice`, `FillTheBlank`, `MatchPairs`,
+  `OrderSteps`, `Crossword` в режимах `inline` и `test`.
+- Для `MatchPairs` и `OrderSteps` добавлен drag-and-drop и клавиатурная альтернатива.
+- Реализованы `evaluate` функции для всех типов с поддержкой частичной правильности.
+- Добавлены unit-тесты для evaluate-функций всех типов (`Vitest`).
+- Test-режим расширен до набора Milestone 3 (11 заданий разного типа).
 
 ## План следующих этапов
 
-1. Добавить остальные типы задач: `FillTheBlank`, `MatchPairs`, `OrderSteps`, `Crossword`.
-2. Реализовать обязательный drag-and-drop для `MatchPairs` и `OrderSteps`.
-3. Расширить test-сессию до 10–12 заданий, добавить финальный экран и рекомендации.
-4. Довести контент до целевых 3 статей и минимум 10 inline-упражнений.
+1. Реализовать `TestSessionProvider` и централизованное хранение результатов прохождения теста.
+2. Добавить финальную страницу результатов с уровнем, разбором и рекомендациями по `tags`.
+3. Довести контент статей до целевых учебных материалов и улучшить UX/доступность.
