@@ -1,0 +1,32 @@
+.panel {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  display: grid;
+  gap: 6px;
+  background: var(--surface-muted);
+}
+
+.title {
+  margin: 0;
+  font-weight: 700;
+}
+
+.feedback,
+.score,
+.explanation {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.answered-correct {
+  border-color: color-mix(in srgb, var(--state-correct) 45%, var(--border));
+}
+
+.answered-partial {
+  border-color: color-mix(in srgb, var(--state-partial) 45%, var(--border));
+}
+
+.answered-wrong {
+  border-color: color-mix(in srgb, var(--state-wrong) 45%, var(--border));
+}

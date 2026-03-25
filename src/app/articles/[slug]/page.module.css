@@ -69,3 +69,24 @@
   background: transparent;
   padding: 0;
 }
+
+.practice {
+  margin-top: 22px;
+  display: grid;
+  gap: 12px;
+}
+
+.practice h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.practice p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.exerciseList {
+  display: grid;
+  gap: 12px;
+}

@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ExerciseRenderer } from "@/components/exercises";
 import { articleList, getArticleBySlug } from "@/lib/articles";
+import { getInlineExercisesForArticle } from "@/lib/exercises";
 import styles from "./page.module.css";
 
 interface ArticlePageProps {
@@ -20,6 +22,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   }
 
   const ArticleComponent = article.Component;
+  const inlineExercises = getInlineExercisesForArticle(slug);
 
   return (
     <main className={styles.page}>
@@ -35,6 +38,18 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       <article className={styles.prose}>
         <ArticleComponent />
       </article>
+
+      {inlineExercises.length > 0 ? (
+        <section className={styles.practice}>
+          <h2>Практика по теме</h2>
+          <p>Упражнения работают в inline-режиме и дают обратную связь сразу в статье.</p>
+          <div className={styles.exerciseList}>
+            {inlineExercises.map((exercise) => (
+              <ExerciseRenderer key={exercise.id} exercise={exercise} mode="inline" />
+            ))}
+          </div>
+        </section>
+      ) : null}
     </main>
   );
 }

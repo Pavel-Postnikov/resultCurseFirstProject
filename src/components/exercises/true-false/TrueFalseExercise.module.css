@@ -1,0 +1,30 @@
+.statement {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.optionRow {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.option {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-muted);
+  padding: 10px 14px;
+  cursor: pointer;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.option:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.active {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, white);
+}
