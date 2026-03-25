@@ -1,0 +1,22 @@
+## React + TypeScript: что спрашивают чаще всего
+
+В интервью часто комбинируют вопросы про React и TS:
+
+- когда компонент перерисовывается;
+- как типизировать `props` и обработчики событий;
+- чем `type` отличается от `interface` в практической работе.
+
+### Базовая типизация компонента
+
+```tsx
+type Props = {
+  title: string;
+  onOpen: () => void;
+};
+
+export function Card({ title, onOpen }: Props) {
+  return <button onClick={onOpen}>{title}</button>;
+}
+```
+
+На следующих этапах сюда добавим inline-упражнения.

@@ -1,0 +1,35 @@
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 20px 72px;
+}
+
+.page h1 {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 38px);
+}
+
+.page p {
+  color: var(--text-muted);
+}
+
+.grid {
+  margin-top: 20px;
+  display: grid;
+  gap: 12px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.card h2 {
+  margin: 0;
+}
+
+.card p {
+  margin: 10px 0 0;
+}

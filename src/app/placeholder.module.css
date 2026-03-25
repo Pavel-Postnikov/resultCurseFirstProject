@@ -1,0 +1,20 @@
+.page {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-top: 34px;
+}
+
+.page h1 {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 36px);
+}
+
+.page p {
+  margin: 14px 0 0;
+  color: var(--text-muted);
+}

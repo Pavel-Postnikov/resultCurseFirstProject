@@ -1,0 +1,18 @@
+## Что важно помнить на интервью
+
+JavaScript исполняется в рамках **execution context**. Интервьюеры обычно проверяют,
+понимаешь ли ты разницу между call stack, task queue и microtask queue.
+
+### Частая ловушка
+
+`setTimeout(..., 0)` не означает моментальное выполнение. Сначала стек должен
+освободиться, затем движок проверит очередь задач.
+
+```js
+console.log("A");
+setTimeout(() => console.log("B"), 0);
+Promise.resolve().then(() => console.log("C"));
+console.log("D");
+```
+
+Ожидаемый вывод: `A, D, C, B`.
