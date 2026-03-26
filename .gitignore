@@ -24,6 +24,8 @@
 .DS_Store
 *.pem
 .idea
+plan.md
+roadmap-frontend-interview-portal.md
 
 # debug
 npm-debug.log*
