@@ -36,6 +36,22 @@
   min-height: 38px;
   background: white;
   color: var(--text-muted);
+  transition:
+    border-color var(--motion-duration-fast) var(--motion-ease-standard),
+    background-color var(--motion-duration-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-duration-fast) var(--motion-ease-standard),
+    transform var(--motion-duration-fast) var(--motion-ease-standard);
+}
+
+.dropZoneActive {
+  border-color: color-mix(in srgb, var(--accent) 56%, var(--border));
+  background: color-mix(in srgb, var(--accent) 10%, white);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 25%, transparent);
+  transform: translateY(-1px);
+}
+
+.dropZoneFilled {
+  color: var(--text);
 }
 
 .selectLabel {
@@ -69,6 +85,14 @@
   padding: 8px 10px;
   background: white;
   cursor: grab;
+  transition:
+    border-color var(--motion-duration-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+}
+
+.draggableItem:not(:disabled):hover {
+  border-color: color-mix(in srgb, var(--accent) 36%, var(--border));
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
 }
 
 .draggableItem:disabled {

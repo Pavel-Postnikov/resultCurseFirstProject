@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { evaluateOrderSteps } from "@/lib/evaluation";
 import { ExerciseActions } from "../common/ExerciseActions";
@@ -56,7 +57,7 @@ export function OrderStepsExercise({
   );
   const [attempts, setAttempts] = useState(0);
   const [result, setResult] = useState<EvaluationResult | null>(null);
-  const [draggingId, setDraggingId] = useState<string | null>(null);
+  const shouldReduceMotion = useReducedMotion();
 
   const stepTextMap = useMemo(
     () => Object.fromEntries(exercise.payload.steps.map((step) => [step.id, step.text])),
@@ -93,22 +94,6 @@ export function OrderStepsExercise({
     updateOrder(moveItem(orderedStepIds, index, nextIndex));
   }
 
-  function moveByDrop(targetId: string) {
-    if (!draggingId) {
-      return;
-    }
-
-    const fromIndex = orderedStepIds.indexOf(draggingId);
-    const toIndex = orderedStepIds.indexOf(targetId);
-
-    if (fromIndex === -1 || toIndex === -1) {
-      return;
-    }
-
-    updateOrder(moveItem(orderedStepIds, fromIndex, toIndex));
-    setDraggingId(null);
-  }
-
   function handleCheck() {
     if (!canCheck) {
       return;
@@ -140,14 +125,16 @@ export function OrderStepsExercise({
     >
       <ol className={styles.list}>
         {orderedStepIds.map((stepId, index) => (
-          <li
+          <motion.li
             key={stepId}
+            layout
+            transition={
+              shouldReduceMotion
+                ? { duration: 0 }
+                : { type: "spring", stiffness: 420, damping: 32, mass: 0.68 }
+            }
             className={styles.item}
-            draggable={!readonly && !result}
             aria-label={`Шаг ${index + 1}: ${stepTextMap[stepId]}`}
-            onDragStart={() => setDraggingId(stepId)}
-            onDragOver={(event) => event.preventDefault()}
-            onDrop={() => moveByDrop(stepId)}
           >
             <div className={styles.itemContent}>
               <span className={styles.stepIndex}>{index + 1}.</span>
@@ -171,11 +158,13 @@ export function OrderStepsExercise({
                 ↓
               </button>
             </div>
-          </li>
+          </motion.li>
         ))}
       </ol>
 
-      <p className={styles.hint}>Drag-and-drop или кнопки ↑/↓ для клавиатурного сценария.</p>
+      <p className={styles.hint}>
+        Порядок меняется кнопками ↑/↓ (стабильный режим без drag-and-drop).
+      </p>
 
       <ExerciseActions
         mode={mode}

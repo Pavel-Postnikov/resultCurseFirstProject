@@ -12,6 +12,11 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  transition:
+    transform var(--motion-duration-fast) var(--motion-ease-standard),
+    border-color var(--motion-duration-fast) var(--motion-ease-standard),
+    background-color var(--motion-duration-fast) var(--motion-ease-standard),
+    opacity var(--motion-duration-fast) var(--motion-ease-standard);
 }
 
 .primary {
@@ -29,6 +34,16 @@
 .secondary:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+.primary:not(:disabled):hover,
+.secondary:not(:disabled):hover {
+  transform: translateY(-1px);
+}
+
+.primary:not(:disabled):active,
+.secondary:not(:disabled):active {
+  transform: translateY(0);
 }
 
 .secondary {

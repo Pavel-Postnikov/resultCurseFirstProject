@@ -3,7 +3,7 @@
   padding-left: 0;
   list-style: none;
   display: grid;
-  gap: 8px;
+  gap: 10px;
 }
 
 .item {
@@ -15,6 +15,11 @@
   justify-content: space-between;
   align-items: center;
   gap: 10px;
+  transition:
+    border-color var(--motion-duration-fast) var(--motion-ease-standard),
+    background-color var(--motion-duration-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-duration-fast) var(--motion-ease-standard),
+    opacity var(--motion-duration-fast) var(--motion-ease-standard);
 }
 
 .itemContent {
@@ -39,6 +44,19 @@
   background: white;
   width: 30px;
   height: 30px;
+  transition:
+    transform var(--motion-duration-fast) var(--motion-ease-standard),
+    background-color var(--motion-duration-fast) var(--motion-ease-standard),
+    border-color var(--motion-duration-fast) var(--motion-ease-standard);
+}
+
+.controls button:not(:disabled):hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--accent) 32%, var(--border));
+}
+
+.controls button:not(:disabled):active {
+  transform: translateY(0);
 }
 
 .controls button:focus-visible {

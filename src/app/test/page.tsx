@@ -1,5 +1,6 @@
 "use client";
 
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { ExerciseRenderer } from "@/components/exercises";
 import { ProgressBar, TestSessionProvider, useTestSession } from "@/components/test";
@@ -9,6 +10,8 @@ import styles from "./page.module.css";
 function TestPageContent() {
   const { isHydrated, currentExercise, isCompleted, submit, skip, aggregated, restart } =
     useTestSession();
+  const shouldReduceMotion = useReducedMotion();
+  const questionTransition = shouldReduceMotion ? { duration: 0 } : { duration: 0.24 };
 
   if (!isHydrated) {
     return (
@@ -48,33 +51,51 @@ function TestPageContent() {
             </button>
           </div>
         </section>
-      ) : currentExercise ? (
-        <section className={styles.exerciseWrap}>
-          <ExerciseRenderer
-            key={currentExercise.id}
-            exercise={currentExercise}
-            mode="test"
-            onSubmit={({ exerciseId, answer, result }) => submit(exerciseId, answer, result)}
-          />
-          <div className={styles.exerciseActions}>
-            <button
-              type="button"
-              onClick={() => skip(currentExercise.id)}
-              className={styles.skipButton}
-              aria-label="Пропустить текущий вопрос и перейти к следующему"
-            >
-              Не знаю, пропустить вопрос
-            </button>
-          </div>
-          <p className={styles.hint}>
-            После ответа система автоматически переходит к следующему заданию.
-          </p>
-        </section>
       ) : (
-        <section className={styles.infoCard}>
-          <h2>Нет доступных заданий</h2>
-          <p>Проверь набор test-упражнений в локальных данных.</p>
-        </section>
+        <AnimatePresence mode="wait" initial={false}>
+          {currentExercise ? (
+            <motion.section
+              key={currentExercise.id}
+              className={styles.exerciseWrap}
+              initial={{ opacity: 0, y: 14, scale: 0.99 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.99 }}
+              transition={questionTransition}
+            >
+              <ExerciseRenderer
+                key={currentExercise.id}
+                exercise={currentExercise}
+                mode="test"
+                onSubmit={({ exerciseId, answer, result }) => submit(exerciseId, answer, result)}
+              />
+              <div className={styles.exerciseActions}>
+                <button
+                  type="button"
+                  onClick={() => skip(currentExercise.id)}
+                  className={styles.skipButton}
+                  aria-label="Пропустить текущий вопрос и перейти к следующему"
+                >
+                  Не знаю, пропустить вопрос
+                </button>
+              </div>
+              <p className={styles.hint}>
+                После ответа система автоматически переходит к следующему заданию.
+              </p>
+            </motion.section>
+          ) : (
+            <motion.section
+              key="empty-test"
+              className={styles.infoCard}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={questionTransition}
+            >
+              <h2>Нет доступных заданий</h2>
+              <p>Проверь набор test-упражнений в локальных данных.</p>
+            </motion.section>
+          )}
+        </AnimatePresence>
       )}
     </main>
   );

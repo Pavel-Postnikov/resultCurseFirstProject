@@ -1,3 +1,4 @@
+import { motion, useReducedMotion } from "framer-motion";
 import styles from "./ProgressBar.module.css";
 
 interface ProgressBarProps {
@@ -7,6 +8,7 @@ interface ProgressBarProps {
 
 export function ProgressBar({ answeredCount, totalCount }: ProgressBarProps) {
   const progress = totalCount === 0 ? 0 : Math.round((answeredCount / totalCount) * 100);
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <section className={styles.card}>
@@ -17,7 +19,12 @@ export function ProgressBar({ answeredCount, totalCount }: ProgressBarProps) {
         <strong>{progress}%</strong>
       </div>
       <div className={styles.track}>
-        <div className={styles.fill} style={{ width: `${progress}%` }} />
+        <motion.div
+          className={styles.fill}
+          initial={false}
+          animate={{ width: `${progress}%` }}
+          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.26 }}
+        />
       </div>
     </section>
   );

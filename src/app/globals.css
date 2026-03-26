@@ -15,6 +15,11 @@
   --radius: 16px;
   --font-sans: "Manrope", "Avenir Next", "Segoe UI", "Helvetica Neue", "Arial", sans-serif;
   --font-mono: "JetBrains Mono", "SFMono-Regular", "Cascadia Code", "Consolas", monospace;
+  --motion-duration-fast: 120ms;
+  --motion-duration-medium: 220ms;
+  --motion-duration-slow: 320ms;
+  --motion-ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
 }
 
 * {
@@ -55,4 +60,15 @@ textarea:focus-visible {
 code,
 pre {
   font-family: var(--font-mono);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

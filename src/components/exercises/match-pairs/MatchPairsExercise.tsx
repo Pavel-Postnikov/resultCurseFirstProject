@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { evaluateMatchPairs } from "@/lib/evaluation";
 import { ExerciseActions } from "../common/ExerciseActions";
@@ -61,6 +62,8 @@ export function MatchPairsExercise({
   const [attempts, setAttempts] = useState(0);
   const [result, setResult] = useState<EvaluationResult | null>(null);
   const [draggingRightId, setDraggingRightId] = useState<string | null>(null);
+  const [activeDropLeftId, setActiveDropLeftId] = useState<string | null>(null);
+  const shouldReduceMotion = useReducedMotion();
 
   const maxAttempts = mode === "inline" ? 2 : 1;
   const status = getStatus(result);
@@ -92,6 +95,7 @@ export function MatchPairsExercise({
   function handleDrop(leftId: string, droppedRightId: string) {
     updatePair(leftId, droppedRightId);
     setDraggingRightId(null);
+    setActiveDropLeftId(null);
   }
 
   function handleCheck() {
@@ -131,11 +135,19 @@ export function MatchPairsExercise({
               <p className={styles.leftText}>{leftItem.text}</p>
 
               <div
-                className={styles.dropZone}
+                className={`${styles.dropZone} ${activeDropLeftId === leftItem.id ? styles.dropZoneActive : ""} ${pairs[leftItem.id] ? styles.dropZoneFilled : ""}`}
                 role="group"
                 aria-label={`Зона соответствия для термина ${leftItem.text}`}
                 tabIndex={0}
-                onDragOver={(event) => event.preventDefault()}
+                onDragOver={(event) => {
+                  event.preventDefault();
+                  setActiveDropLeftId(leftItem.id);
+                }}
+                onDragLeave={() => {
+                  if (activeDropLeftId === leftItem.id) {
+                    setActiveDropLeftId(null);
+                  }
+                }}
                 onDrop={(event) => {
                   event.preventDefault();
                   const droppedRightId =
@@ -173,23 +185,38 @@ export function MatchPairsExercise({
           <div className={styles.draggableList}>
             {exercise.payload.right.map((rightItem) => {
               const isUsed = Object.values(pairs).includes(rightItem.id);
+              const isDraggingCurrent = draggingRightId === rightItem.id;
 
               return (
-                <button
+                <motion.button
                   key={rightItem.id}
+                  layout
                   type="button"
                   draggable={!readonly && !result}
                   disabled={!!readonly || !!result}
                   className={`${styles.draggableItem} ${isUsed ? styles.used : ""}`}
                   aria-label={`Определение для перетаскивания: ${rightItem.text}`}
-                  onDragStart={(event) => {
+                  animate={
+                    isDraggingCurrent
+                      ? { opacity: 0.15, scale: 0.98 }
+                      : isUsed
+                        ? { opacity: 0.55, scale: 1 }
+                        : { opacity: 1, scale: 1 }
+                  }
+                  whileHover={readonly || result ? undefined : { y: -1 }}
+                  whileTap={readonly || result ? undefined : { scale: 0.995 }}
+                  transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.16 }}
+                  onDragStartCapture={(event) => {
                     event.dataTransfer.setData("text/plain", rightItem.id);
                     setDraggingRightId(rightItem.id);
                   }}
-                  onDragEnd={() => setDraggingRightId(null)}
+                  onDragEndCapture={() => {
+                    setDraggingRightId(null);
+                    setActiveDropLeftId(null);
+                  }}
                 >
                   {rightItem.text}
-                </button>
+                </motion.button>
               );
             })}
           </div>
