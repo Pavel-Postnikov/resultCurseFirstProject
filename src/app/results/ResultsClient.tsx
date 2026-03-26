@@ -11,7 +11,11 @@ import {
 import { getWeakTopics } from "@/lib/scoring/weakTopics";
 import styles from "./page.module.css";
 
-function getResultClass(score: number, isCorrect: boolean): string {
+function getResultClass(score: number, isCorrect: boolean, skipped?: boolean): string {
+  if (skipped) {
+    return styles.skipped;
+  }
+
   if (isCorrect) {
     return styles.correct;
   }
@@ -75,7 +79,11 @@ function ResultsContent() {
 
             const userAnswer = formatUserAnswerLines(exercise, item.answer);
             const correctAnswer = formatCorrectAnswerLines(exercise);
-            const resultClass = getResultClass(item.result.score, item.result.isCorrect);
+            const resultClass = getResultClass(
+              item.result.score,
+              item.result.isCorrect,
+              item.skipped,
+            );
 
             return (
               <article key={exercise.id} className={`${styles.resultCard} ${resultClass}`}>
@@ -88,6 +96,8 @@ function ResultsContent() {
                     {item.result.score} / {item.result.maxScore}
                   </p>
                 </header>
+
+                {item.skipped ? <p className={styles.skippedBadge}>Пропущено</p> : null}
 
                 <div className={styles.answerGrid}>
                   <section>

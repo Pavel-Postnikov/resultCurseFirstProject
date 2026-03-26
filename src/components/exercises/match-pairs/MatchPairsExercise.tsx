@@ -132,6 +132,9 @@ export function MatchPairsExercise({
 
               <div
                 className={styles.dropZone}
+                role="group"
+                aria-label={`Зона соответствия для термина ${leftItem.text}`}
+                tabIndex={0}
                 onDragOver={(event) => event.preventDefault()}
                 onDrop={(event) => {
                   event.preventDefault();
@@ -151,6 +154,7 @@ export function MatchPairsExercise({
                   value={pairs[leftItem.id] ?? ""}
                   onChange={(event) => updatePair(leftItem.id, event.target.value)}
                   disabled={!!readonly || !!result}
+                  aria-label={`Выбери определение для термина ${leftItem.text}`}
                 >
                   <option value="">Не выбрано</option>
                   {exercise.payload.right.map((rightItem) => (
@@ -177,6 +181,7 @@ export function MatchPairsExercise({
                   draggable={!readonly && !result}
                   disabled={!!readonly || !!result}
                   className={`${styles.draggableItem} ${isUsed ? styles.used : ""}`}
+                  aria-label={`Определение для перетаскивания: ${rightItem.text}`}
                   onDragStart={(event) => {
                     event.dataTransfer.setData("text/plain", rightItem.id);
                     setDraggingRightId(rightItem.id);

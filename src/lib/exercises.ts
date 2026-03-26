@@ -36,17 +36,21 @@ const inlineExercisesBySlug: Record<string, Exercise[]> = {
     {
       id: "js-core-ex-03",
       type: "fill-the-blank",
-      title: "Заполни пропуски про Event Loop",
-      question: "Вставь термины про порядок выполнения задач.",
+      title: "Замыкания и область видимости",
+      question: "Вставь ключевые термины про lexical scope.",
       explanation:
-        "После выполнения синхронного кода Event Loop сначала очищает очередь microtasks, затем берет macrotask.",
-      tags: ["event-loop", "async"],
+        "Замыкание сохраняет доступ к переменным из внешнего lexical scope даже после завершения внешней функции.",
+      tags: ["closures", "scope"],
       payload: {
         template:
-          "После sync-кода сначала выполняются {{blank1}}, а затем начинается следующая {{blank2}}.",
+          "Функция, которая использует переменную из внешней области видимости после завершения внешней функции, называется {{blank1}}. Это поведение основано на {{blank2}}.",
         blanks: [
-          { id: "blank1", answers: ["microtasks", "microtask"], caseSensitive: false },
-          { id: "blank2", answers: ["macrotask", "macrotasks"], caseSensitive: false },
+          { id: "blank1", answers: ["closure", "замыкание"], caseSensitive: false },
+          {
+            id: "blank2",
+            answers: ["lexical scope", "лексическая область видимости"],
+            caseSensitive: false,
+          },
         ],
       },
     },

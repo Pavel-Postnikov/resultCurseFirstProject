@@ -25,7 +25,7 @@ export function FeedbackPanel({
   }
 
   return (
-    <div className={`${styles.panel} ${styles[status]}`}>
+    <div className={`${styles.panel} ${styles[status]}`} role="status" aria-live="polite">
       <p className={styles.title}>{statusTitle[status]}</p>
       <p className={styles.feedback}>{result.feedback}</p>
       <p className={styles.score}>

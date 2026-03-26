@@ -28,7 +28,11 @@ export function getExerciseTypeLabel(type: Exercise["type"]): string {
   }
 }
 
-export function formatUserAnswerLines(exercise: Exercise, answer: ExerciseAnswer): string[] {
+export function formatUserAnswerLines(exercise: Exercise, answer: ExerciseAnswer | null): string[] {
+  if (!answer) {
+    return ["Пропущено"];
+  }
+
   switch (exercise.type) {
     case "true-false": {
       const typedAnswer = answer as TrueFalseAnswer;

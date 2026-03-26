@@ -7,7 +7,7 @@ import { milestone3TestExercises } from "@/lib/exercises";
 import styles from "./page.module.css";
 
 function TestPageContent() {
-  const { isHydrated, currentExercise, isCompleted, submit, aggregated, restart } =
+  const { isHydrated, currentExercise, isCompleted, submit, skip, aggregated, restart } =
     useTestSession();
 
   if (!isHydrated) {
@@ -26,8 +26,8 @@ function TestPageContent() {
       <header className={styles.header}>
         <h1>Test-режим</h1>
         <p>
-          Milestone 4: сессия теста централизована, прогресс сохраняется, а после завершения
-          доступен полный экран результатов.
+          Последовательное прохождение заданий с сохранением прогресса, возможностью пропуска и
+          финальным разбором на странице результатов.
         </p>
       </header>
 
@@ -56,6 +56,16 @@ function TestPageContent() {
             mode="test"
             onSubmit={({ exerciseId, answer, result }) => submit(exerciseId, answer, result)}
           />
+          <div className={styles.exerciseActions}>
+            <button
+              type="button"
+              onClick={() => skip(currentExercise.id)}
+              className={styles.skipButton}
+              aria-label="Пропустить текущий вопрос и перейти к следующему"
+            >
+              Не знаю, пропустить вопрос
+            </button>
+          </div>
           <p className={styles.hint}>
             После ответа система автоматически переходит к следующему заданию.
           </p>

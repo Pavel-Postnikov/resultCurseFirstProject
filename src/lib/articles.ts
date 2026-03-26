@@ -1,4 +1,5 @@
 import type { ComponentType } from "react";
+import type { MDXComponents } from "mdx/types";
 
 import BrowserInterviewArticle from "../../content/articles/browser-interview.mdx";
 import JsCoreArticle from "../../content/articles/js-core.mdx";
@@ -8,7 +9,7 @@ export const articleSlugs = ["js-core", "react-ts", "browser-interview"] as cons
 
 export type ArticleSlug = (typeof articleSlugs)[number];
 
-type ArticleComponent = ComponentType<Record<string, never>>;
+type ArticleComponent = ComponentType<{ components?: MDXComponents }>;
 
 export interface ArticleMeta {
   slug: ArticleSlug;

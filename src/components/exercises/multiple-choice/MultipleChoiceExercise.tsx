@@ -104,24 +104,28 @@ export function MultipleChoiceExercise({
       status={status}
       typeLabel="Multiple Choice"
     >
-      <div className={styles.options}>
-        {exercise.payload.options.map((option) => {
-          const checked = selectedOptionIds.includes(option.id);
+      <fieldset className={styles.fieldset}>
+        <legend className={styles.legend}>Варианты ответа</legend>
+        <div className={styles.options}>
+          {exercise.payload.options.map((option) => {
+            const checked = selectedOptionIds.includes(option.id);
 
-          return (
-            <label key={option.id} className={`${styles.option} ${checked ? styles.active : ""}`}>
-              <input
-                type={inputType}
-                name={groupName}
-                checked={checked}
-                onChange={() => updateSelection(option.id)}
-                disabled={!!readonly || !!result}
-              />
-              <span>{option.text}</span>
-            </label>
-          );
-        })}
-      </div>
+            return (
+              <label key={option.id} className={`${styles.option} ${checked ? styles.active : ""}`}>
+                <input
+                  type={inputType}
+                  name={groupName}
+                  checked={checked}
+                  onChange={() => updateSelection(option.id)}
+                  disabled={!!readonly || !!result}
+                  aria-label={`Вариант: ${option.text}`}
+                />
+                <span>{option.text}</span>
+              </label>
+            );
+          })}
+        </div>
+      </fieldset>
 
       <ExerciseActions
         mode={mode}

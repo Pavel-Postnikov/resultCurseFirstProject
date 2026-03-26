@@ -2,8 +2,9 @@ import type { Exercise, ExerciseAnswer, EvaluationResult } from "@/components/ex
 
 export interface TestSessionItemResult {
   exerciseId: string;
-  answer: ExerciseAnswer;
+  answer: ExerciseAnswer | null;
   result: EvaluationResult;
+  skipped?: boolean;
 }
 
 export interface TypeProgressItem {

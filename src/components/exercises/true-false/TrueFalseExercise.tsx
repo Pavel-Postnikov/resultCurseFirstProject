@@ -85,12 +85,14 @@ export function TrueFalseExercise({
     >
       <p className={styles.statement}>{statement}</p>
 
-      <div className={styles.optionRow}>
+      <div className={styles.optionRow} role="radiogroup" aria-label="Выбор ответа">
         <button
           type="button"
           onClick={() => setSelected(true)}
           disabled={!!result || !!readonly}
           className={`${styles.option} ${selected === true ? styles.active : ""}`}
+          aria-pressed={selected === true}
+          aria-label="Выбрать вариант Верно"
         >
           Верно
         </button>
@@ -99,6 +101,8 @@ export function TrueFalseExercise({
           onClick={() => setSelected(false)}
           disabled={!!result || !!readonly}
           className={`${styles.option} ${selected === false ? styles.active : ""}`}
+          aria-pressed={selected === false}
+          aria-label="Выбрать вариант Неверно"
         >
           Неверно
         </button>

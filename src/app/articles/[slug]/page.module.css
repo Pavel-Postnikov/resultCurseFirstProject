@@ -70,23 +70,19 @@
   padding: 0;
 }
 
-.practice {
-  margin-top: 22px;
-  display: grid;
-  gap: 12px;
+.inlineExercise {
+  margin: 18px 0;
 }
 
-.practice h2 {
-  margin: 0;
-  font-size: 24px;
+.inlineFallback {
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: var(--surface-muted);
+  margin: 16px 0;
 }
 
-.practice p {
+.inlineFallback p {
   margin: 0;
   color: var(--text-muted);
-}
-
-.exerciseList {
-  display: grid;
-  gap: 12px;
 }

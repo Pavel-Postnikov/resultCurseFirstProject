@@ -140,6 +140,7 @@ export function FillTheBlankExercise({
               onChange={(event) => handleChange(part.id, event.target.value)}
               placeholder={part.id}
               disabled={!!readonly || !!result}
+              aria-label={`Заполнить пропуск ${part.id}`}
             />
           );
         })}

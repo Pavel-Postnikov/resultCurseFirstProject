@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import "./globals.css";
+import styles from "./layout.module.css";
 
 export const metadata: Metadata = {
   title: {
@@ -16,7 +18,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <body>{children}</body>
+      <body>
+        <div className={styles.shell}>
+          <header className={styles.header}>
+            <nav className={styles.nav}>
+              <Link href="/">Главная</Link>
+              <Link href="/articles">Статьи</Link>
+              <Link href="/test">Тест</Link>
+              <Link href="/results">Результаты</Link>
+            </nav>
+          </header>
+          <div className={styles.content}>{children}</div>
+        </div>
+      </body>
     </html>
   );
 }

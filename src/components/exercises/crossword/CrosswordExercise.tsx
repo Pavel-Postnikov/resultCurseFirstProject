@@ -165,7 +165,7 @@ export function CrosswordExercise({
       ) : null}
 
       <div className={styles.layout}>
-        <section className={styles.grid}>
+        <section className={styles.grid} aria-label="Сетка кроссворда">
           {Array.from({ length: exercise.payload.size.rows }).map((_, row) => (
             <div
               key={row}
@@ -204,6 +204,7 @@ export function CrosswordExercise({
                 disabled={!!readonly || !!result}
                 placeholder="Введите слово"
                 maxLength={expectedLengthMap[word.id]}
+                aria-label={`Ответ для ${word.id.toUpperCase()}: ${word.clue}`}
               />
               <span className={styles.lengthHint}>
                 {(values[word.id] ?? "").length}/{expectedLengthMap[word.id]}

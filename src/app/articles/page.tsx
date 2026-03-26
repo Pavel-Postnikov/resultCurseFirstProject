@@ -11,7 +11,7 @@ export default function ArticlesPage() {
     <main className={styles.page}>
       <header>
         <h1>Статьи</h1>
-        <p>Теория по блокам + встроенная практика (следующий этап после Milestone 1).</p>
+        <p>Теория по блокам + встроенная практика прямо в тексте статьи.</p>
       </header>
 
       <section className={styles.grid}>

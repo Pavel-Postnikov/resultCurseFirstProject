@@ -73,6 +73,10 @@
   border-left-color: var(--state-wrong);
 }
 
+.skipped {
+  border-left-color: var(--state-idle);
+}
+
 .cardHeader {
   display: flex;
   justify-content: space-between;
@@ -93,6 +97,18 @@
 .score {
   margin: 0;
   font-weight: 700;
+}
+
+.skippedBadge {
+  margin: 0;
+  display: inline-flex;
+  width: fit-content;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--surface-muted);
 }
 
 .answerGrid {

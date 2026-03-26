@@ -23,6 +23,29 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   const ArticleComponent = article.Component;
   const inlineExercises = getInlineExercisesForArticle(slug);
+  const inlineExercisesById = Object.fromEntries(
+    inlineExercises.map((exercise) => [exercise.id, exercise]),
+  );
+
+  function ExerciseInline({ id }: { id: string }) {
+    const exercise = inlineExercisesById[id];
+
+    if (!exercise) {
+      return (
+        <aside className={styles.inlineFallback}>
+          <p>
+            Упражнение <code>{id}</code> не найдено в данных статьи.
+          </p>
+        </aside>
+      );
+    }
+
+    return (
+      <div className={styles.inlineExercise}>
+        <ExerciseRenderer exercise={exercise} mode="inline" />
+      </div>
+    );
+  }
 
   return (
     <main className={styles.page}>
@@ -36,20 +59,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       </header>
 
       <article className={styles.prose}>
-        <ArticleComponent />
+        <ArticleComponent components={{ ExerciseInline }} />
       </article>
-
-      {inlineExercises.length > 0 ? (
-        <section className={styles.practice}>
-          <h2>Практика по теме</h2>
-          <p>Упражнения работают в inline-режиме и дают обратную связь сразу в статье.</p>
-          <div className={styles.exerciseList}>
-            {inlineExercises.map((exercise) => (
-              <ExerciseRenderer key={exercise.id} exercise={exercise} mode="inline" />
-            ))}
-          </div>
-        </section>
-      ) : null}
     </main>
   );
 }

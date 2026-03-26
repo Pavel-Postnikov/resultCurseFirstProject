@@ -26,6 +26,7 @@ interface TestSessionContextValue {
   isCompleted: boolean;
   currentExercise: Exercise | null;
   submit: (exerciseId: string, answer: ExerciseAnswer, result: EvaluationResult) => void;
+  skip: (exerciseId: string) => void;
   restart: () => void;
   aggregated: ReturnType<typeof aggregateScores>;
 }
@@ -167,6 +168,41 @@ export function TestSessionProvider({ exercises, children }: TestSessionProvider
     });
   }
 
+  function skip(exerciseId: string) {
+    setState((prev) => {
+      if (prev.results[exerciseId]) {
+        return prev;
+      }
+
+      const nextResults = {
+        ...prev.results,
+        [exerciseId]: {
+          exerciseId,
+          answer: null,
+          skipped: true,
+          result: {
+            isCorrect: false,
+            score: 0,
+            maxScore: 1,
+            feedback: "Вопрос пропущен. Баллы за задание: 0.",
+          },
+        },
+      };
+
+      const answeredCount = Object.keys(nextResults).length;
+      const finished = answeredCount >= exercises.length;
+
+      return {
+        ...prev,
+        results: nextResults,
+        currentIndex: finished
+          ? Math.max(exercises.length - 1, 0)
+          : findNextUnansweredIndex(exercises, nextResults),
+        completedAt: finished ? new Date().toISOString() : null,
+      };
+    });
+  }
+
   function restart() {
     const next = createInitialState();
     setState(next);
@@ -187,6 +223,7 @@ export function TestSessionProvider({ exercises, children }: TestSessionProvider
     isCompleted,
     currentExercise,
     submit,
+    skip,
     restart,
     aggregated,
   };

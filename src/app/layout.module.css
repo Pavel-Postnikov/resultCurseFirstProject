@@ -1,0 +1,44 @@
+.shell {
+  min-height: 100vh;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(8px);
+  background: color-mix(in srgb, var(--bg) 86%, white);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 10px 20px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.nav a {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 7px 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.nav a:hover {
+  background: var(--surface-muted);
+  color: var(--text);
+}
+
+.nav a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.content {
+  padding-top: 6px;
+}

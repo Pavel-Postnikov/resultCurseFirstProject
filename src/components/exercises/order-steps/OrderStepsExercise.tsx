@@ -144,6 +144,7 @@ export function OrderStepsExercise({
             key={stepId}
             className={styles.item}
             draggable={!readonly && !result}
+            aria-label={`Шаг ${index + 1}: ${stepTextMap[stepId]}`}
             onDragStart={() => setDraggingId(stepId)}
             onDragOver={(event) => event.preventDefault()}
             onDrop={() => moveByDrop(stepId)}
@@ -157,6 +158,7 @@ export function OrderStepsExercise({
                 type="button"
                 onClick={() => moveByKeyboard(index, -1)}
                 disabled={!!readonly || !!result || index === 0}
+                aria-label={`Поднять шаг ${index + 1} вверх`}
               >
                 ↑
               </button>
@@ -164,6 +166,7 @@ export function OrderStepsExercise({
                 type="button"
                 onClick={() => moveByKeyboard(index, 1)}
                 disabled={!!readonly || !!result || index === orderedStepIds.length - 1}
+                aria-label={`Опустить шаг ${index + 1} вниз`}
               >
                 ↓
               </button>

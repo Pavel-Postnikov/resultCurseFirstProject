@@ -11,11 +11,11 @@ export default function HomePage() {
   return (
     <main className={styles.page}>
       <section className={styles.hero}>
-        <p className={styles.kicker}>Milestone 3</p>
+        <p className={styles.kicker}>Interview Lab</p>
         <h1>Frontend Interview Portal</h1>
         <p>
-          Реализована архитектура интерактивов и 6 типов упражнений в двух режимах: inline внутри
-          статей и test с общим прогрессом.
+          Теория, встроенные интерактивы и полноценный test-режим в одном учебном портале для
+          подготовки к frontend-собеседованию.
         </p>
         <div className={styles.actions}>
           <Link href="/articles" className={styles.primary}>
@@ -31,7 +31,7 @@ export default function HomePage() {
         {articleLinks.map((article) => (
           <Link key={article.slug} href={`/articles/${article.slug}`} className={styles.card}>
             <h2>{article.title}</h2>
-            <p>Черновая статья подключена через MDX.</p>
+            <p>Подробная теория + встроенные задания по ходу материала.</p>
           </Link>
         ))}
       </section>
