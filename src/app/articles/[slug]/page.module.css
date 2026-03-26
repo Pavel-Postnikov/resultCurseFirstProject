@@ -8,10 +8,14 @@
   margin-bottom: 18px;
   color: var(--text-muted);
   font-weight: 600;
+  animation: article-fade-up var(--motion-duration-medium) var(--motion-ease-standard) both;
+  animation-delay: 40ms;
 }
 
 .header {
   margin-bottom: 18px;
+  animation: article-fade-up var(--motion-duration-medium) var(--motion-ease-standard) both;
+  animation-delay: 100ms;
 }
 
 .header h1 {
@@ -30,6 +34,43 @@
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 24px;
+}
+
+.prose > * {
+  animation: article-fade-up var(--motion-duration-medium) var(--motion-ease-standard) both;
+  animation-delay: 160ms;
+}
+
+.prose > *:nth-child(1) {
+  animation-delay: 160ms;
+}
+
+.prose > *:nth-child(2) {
+  animation-delay: 210ms;
+}
+
+.prose > *:nth-child(3) {
+  animation-delay: 260ms;
+}
+
+.prose > *:nth-child(4) {
+  animation-delay: 310ms;
+}
+
+.prose > *:nth-child(5) {
+  animation-delay: 360ms;
+}
+
+.prose > *:nth-child(6) {
+  animation-delay: 410ms;
+}
+
+.prose > *:nth-child(7) {
+  animation-delay: 460ms;
+}
+
+.prose > *:nth-child(8) {
+  animation-delay: 510ms;
 }
 
 .prose h2 {
@@ -85,4 +126,16 @@
 .inlineFallback p {
   margin: 0;
   color: var(--text-muted);
+}
+
+@keyframes article-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { ResultSummary, TestSessionProvider, useTestSession, WeakTopics } from "@/components/test";
 import { milestone3TestExercises } from "@/lib/exercises";
@@ -25,14 +26,21 @@ function getResultClass(score: number, isCorrect: boolean, skipped?: boolean): s
 
 function ResultsContent() {
   const { isHydrated, isCompleted, exercises, state, aggregated, restart } = useTestSession();
+  const shouldReduceMotion = useReducedMotion();
+  const shouldAnimate = !shouldReduceMotion;
 
   if (!isHydrated) {
     return (
       <main className={styles.page}>
-        <section className={styles.infoCard}>
+        <motion.section
+          className={styles.infoCard}
+          initial={shouldAnimate ? { opacity: 0, y: 8 } : false}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2 }}
+        >
           <h1>Результаты</h1>
           <p>Загружаем сохраненную test-сессию...</p>
-        </section>
+        </motion.section>
       </main>
     );
   }
@@ -40,7 +48,12 @@ function ResultsContent() {
   if (!isCompleted) {
     return (
       <main className={styles.page}>
-        <section className={styles.infoCard}>
+        <motion.section
+          className={styles.infoCard}
+          initial={shouldAnimate ? { opacity: 0, y: 8 } : false}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2 }}
+        >
           <h1>Результаты</h1>
           <p>Тест еще не завершен. Дойди до конца теста, чтобы получить полный разбор.</p>
           <div className={styles.actions}>
@@ -51,7 +64,7 @@ function ResultsContent() {
               Перейти к статьям
             </Link>
           </div>
-        </section>
+        </motion.section>
       </main>
     );
   }
@@ -60,18 +73,28 @@ function ResultsContent() {
 
   return (
     <main className={styles.page}>
-      <header className={styles.header}>
+      <motion.header
+        className={styles.header}
+        initial={shouldAnimate ? { opacity: 0, y: 10 } : false}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.2 }}
+      >
         <h1>Результаты теста</h1>
         <p>Финальный отчет: общий итог, слабые темы и детальный разбор каждого вопроса.</p>
-      </header>
+      </motion.header>
 
       <ResultSummary aggregated={aggregated} />
       <WeakTopics items={weakTopics} />
 
-      <section className={styles.breakdown}>
+      <motion.section
+        className={styles.breakdown}
+        initial={shouldAnimate ? { opacity: 0, y: 12 } : false}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.26 }}
+      >
         <h2>Разбор по вопросам</h2>
         <div className={styles.breakdownList}>
-          {exercises.map((exercise) => {
+          {exercises.map((exercise, index) => {
             const item = state.results[exercise.id];
             if (!item) {
               return null;
@@ -86,7 +109,13 @@ function ResultsContent() {
             );
 
             return (
-              <article key={exercise.id} className={`${styles.resultCard} ${resultClass}`}>
+              <motion.article
+                key={exercise.id}
+                className={`${styles.resultCard} ${resultClass}`}
+                initial={shouldAnimate ? { opacity: 0, y: 8 } : false}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.18, delay: shouldAnimate ? index * 0.02 : 0 }}
+              >
                 <header className={styles.cardHeader}>
                   <div>
                     <h3>{exercise.title ?? exercise.question}</h3>
@@ -120,13 +149,18 @@ function ResultsContent() {
 
                 <p className={styles.feedback}>Feedback: {item.result.feedback}</p>
                 <p className={styles.explanation}>Пояснение: {exercise.explanation}</p>
-              </article>
+              </motion.article>
             );
           })}
         </div>
-      </section>
+      </motion.section>
 
-      <div className={styles.actions}>
+      <motion.div
+        className={styles.actions}
+        initial={shouldAnimate ? { opacity: 0, y: 8 } : false}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.2 }}
+      >
         <button type="button" onClick={restart} className={styles.primary}>
           Пройти заново
         </button>
@@ -136,7 +170,7 @@ function ResultsContent() {
         <Link href="/articles" className={styles.secondary}>
           К статьям
         </Link>
-      </div>
+      </motion.div>
     </main>
   );
 }

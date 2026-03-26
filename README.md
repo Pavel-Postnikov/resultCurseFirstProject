@@ -10,6 +10,8 @@
 - Milestone 4: `Выполнено` (TestSessionProvider, сохранение прогресса, финальный экран результатов).
 - Milestone 5: `Выполнено` (контент статей, inline-встраивание упражнений, UX/accessibility полировка).
 - Milestone 6: `Выполнено` (финальная документация и самопроверка перед сдачей).
+- Milestone 7: `Выполнено` (motion foundations и полировка интеракций test-flow).
+- Milestone 8: `Выполнено частично` (OrderSteps DnD v2, first-render анимации статей, анимации `/results`; пункты route transitions и state-micro-motion сняты).
 
 ## Почему выбран этот стек
 
@@ -18,6 +20,7 @@
 - `MDX` — контент и интерактивные компоненты находятся в одном материале, что идеально для inline-формата.
 - `Локальные данные` — для MVP не нужен backend, проще отлаживать и сдавать проект.
 - `CSS Modules + CSS variables` — изоляция стилей компонентов и единая дизайн-система.
+- `dnd-kit` — устойчивый drag-and-drop сценарий для `OrderSteps`.
 - `ESLint + Prettier` — контроль качества и единый стиль кода.
 - `Vitest` — быстрые unit-тесты бизнес-логики (`evaluate`, `scoring`).
 
