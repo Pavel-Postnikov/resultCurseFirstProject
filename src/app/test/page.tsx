@@ -1,81 +1,79 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import Link from "next/link";
 import { ExerciseRenderer } from "@/components/exercises";
-import type { ExerciseAnswer, EvaluationResult } from "@/components/exercises";
+import { ProgressBar, TestSessionProvider, useTestSession } from "@/components/test";
 import { milestone3TestExercises } from "@/lib/exercises";
 import styles from "./page.module.css";
 
-interface SubmittedItem {
-  answer: ExerciseAnswer;
-  result: EvaluationResult;
-}
+function TestPageContent() {
+  const { isHydrated, currentExercise, isCompleted, submit, aggregated, restart } =
+    useTestSession();
 
-export default function TestPage() {
-  const [submitted, setSubmitted] = useState<Record<string, SubmittedItem>>({});
-
-  const answeredCount = Object.keys(submitted).length;
-  const totalCount = milestone3TestExercises.length;
-
-  const { score, maxScore } = useMemo(() => {
-    return Object.values(submitted).reduce(
-      (acc, entry) => ({
-        score: acc.score + entry.result.score,
-        maxScore: acc.maxScore + entry.result.maxScore,
-      }),
-      { score: 0, maxScore: 0 },
+  if (!isHydrated) {
+    return (
+      <main className={styles.page}>
+        <section className={styles.infoCard}>
+          <h1>Test-режим</h1>
+          <p>Восстанавливаем прогресс сессии...</p>
+        </section>
+      </main>
     );
-  }, [submitted]);
-
-  const progress = totalCount === 0 ? 0 : Math.round((answeredCount / totalCount) * 100);
+  }
 
   return (
     <main className={styles.page}>
       <header className={styles.header}>
         <h1>Test-режим</h1>
         <p>
-          Milestone 3: все 6 типов упражнений подключены к общей архитектуре, включая частичную
-          оценку и DnD-компоненты.
+          Milestone 4: сессия теста централизована, прогресс сохраняется, а после завершения
+          доступен полный экран результатов.
         </p>
       </header>
 
-      <section className={styles.progressCard}>
-        <div className={styles.progressTop}>
-          <span>
-            Прогресс: {answeredCount}/{totalCount}
-          </span>
-          <strong>{progress}%</strong>
-        </div>
-        <div className={styles.progressTrack}>
-          <div className={styles.progressFill} style={{ width: `${progress}%` }} />
-        </div>
-      </section>
+      <ProgressBar answeredCount={aggregated.answeredCount} totalCount={aggregated.totalCount} />
 
-      <section className={styles.exerciseList}>
-        {milestone3TestExercises.map((exercise) => (
-          <ExerciseRenderer
-            key={exercise.id}
-            exercise={exercise}
-            mode="test"
-            onSubmit={({ exerciseId, answer, result }) => {
-              setSubmitted((prev) => ({
-                ...prev,
-                [exerciseId]: { answer, result },
-              }));
-            }}
-          />
-        ))}
-      </section>
-
-      {answeredCount === totalCount ? (
-        <section className={styles.summary}>
-          <h2>Промежуточный итог Milestone 3</h2>
+      {isCompleted ? (
+        <section className={styles.infoCard}>
+          <h2>Тест завершен</h2>
           <p>
-            Набрано: {score} / {maxScore}
+            Итог: {aggregated.totalScore} / {aggregated.totalMaxScore}
           </p>
-          <p>На следующем этапе добавим TestSession, финальный экран и рекомендации по темам.</p>
+          <div className={styles.actions}>
+            <Link href="/results" className={styles.primary}>
+              Открыть результаты
+            </Link>
+            <button type="button" onClick={restart} className={styles.secondary}>
+              Пройти заново
+            </button>
+          </div>
         </section>
-      ) : null}
+      ) : currentExercise ? (
+        <section className={styles.exerciseWrap}>
+          <ExerciseRenderer
+            key={currentExercise.id}
+            exercise={currentExercise}
+            mode="test"
+            onSubmit={({ exerciseId, answer, result }) => submit(exerciseId, answer, result)}
+          />
+          <p className={styles.hint}>
+            После ответа система автоматически переходит к следующему заданию.
+          </p>
+        </section>
+      ) : (
+        <section className={styles.infoCard}>
+          <h2>Нет доступных заданий</h2>
+          <p>Проверь набор test-упражнений в локальных данных.</p>
+        </section>
+      )}
     </main>
+  );
+}
+
+export default function TestPage() {
+  return (
+    <TestSessionProvider exercises={milestone3TestExercises}>
+      <TestPageContent />
+    </TestSessionProvider>
   );
 }

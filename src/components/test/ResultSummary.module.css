@@ -1,0 +1,49 @@
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.card h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.kpi {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.score {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.typeGrid {
+  margin-top: 6px;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.typeCard {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-muted);
+  padding: 10px;
+}
+
+.typeCard h3,
+.typeCard p {
+  margin: 0;
+}
+
+.typeCard p + p {
+  margin-top: 4px;
+  color: var(--text-muted);
+}

@@ -1,0 +1,157 @@
+.page {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+  display: grid;
+  gap: 16px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 38px);
+}
+
+.header p {
+  margin: 10px 0 0;
+  color: var(--text-muted);
+}
+
+.infoCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.infoCard h1 {
+  margin: 0;
+}
+
+.infoCard p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.breakdown {
+  display: grid;
+  gap: 10px;
+}
+
+.breakdown h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.breakdownList {
+  display: grid;
+  gap: 12px;
+}
+
+.resultCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--state-idle);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.correct {
+  border-left-color: var(--state-correct);
+}
+
+.partial {
+  border-left-color: var(--state-partial);
+}
+
+.wrong {
+  border-left-color: var(--state-wrong);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.cardHeader h3 {
+  margin: 0;
+}
+
+.typeLabel {
+  margin: 4px 0 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.score {
+  margin: 0;
+  font-weight: 700;
+}
+
+.answerGrid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.answerGrid section {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  background: var(--surface-muted);
+}
+
+.answerGrid h4 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.answerGrid ul {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 4px;
+}
+
+.feedback,
+.explanation {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 10px 14px;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.primary {
+  background: var(--accent);
+  color: white;
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--border));
+}
+
+.secondary {
+  background: white;
+  color: var(--text);
+}

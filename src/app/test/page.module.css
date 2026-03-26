@@ -52,21 +52,65 @@
   gap: 12px;
 }
 
-.summary {
+.exerciseWrap {
+  display: grid;
+  gap: 10px;
+}
+
+.hint {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.infoCard {
   margin-top: 4px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 14px;
   box-shadow: var(--shadow);
   padding: 16px;
+  display: grid;
+  gap: 8px;
 }
 
-.summary h2 {
+.infoCard h2,
+.infoCard h1 {
   margin: 0;
   font-size: 22px;
 }
 
-.summary p {
-  margin: 8px 0 0;
+.infoCard p {
+  margin: 0;
   color: var(--text-muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 10px 14px;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.primary {
+  background: var(--accent);
+  color: white;
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--border));
+}
+
+.secondary {
+  background: white;
+  color: var(--text);
 }
