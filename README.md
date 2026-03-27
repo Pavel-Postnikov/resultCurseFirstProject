@@ -12,6 +12,7 @@
 - Milestone 6: `Выполнено` (финальная документация и самопроверка перед сдачей).
 - Milestone 7: `Выполнено` (motion foundations и полировка интеракций test-flow).
 - Milestone 8: `Выполнено частично` (OrderSteps DnD v2, first-render анимации статей, анимации `/results`; пункты route transitions и state-micro-motion сняты).
+- Milestone 9: `Выполнено` (smoke e2e на Playwright + demo-checklist для быстрой демонстрации).
 
 ## Почему выбран этот стек
 
@@ -69,6 +70,11 @@ npm run dev
 
 Открыть: `http://localhost:3000`
 
+Базовые требования окружения:
+
+- Node.js `>=20` (фиксируется через `.nvmrc`)
+- пакетный менеджер проекта: `npm`
+
 ## Команды качества
 
 ```bash
@@ -76,6 +82,19 @@ npm run format:check
 npm run lint
 npm run test
 npm run build
+```
+
+## E2E (Playwright, Milestone 9)
+
+```bash
+npx playwright install chromium
+npm run test:e2e
+```
+
+Дополнительно для интерактивного режима:
+
+```bash
+npm run test:e2e:ui
 ```
 
 ## Сценарий проверки (куда нажать и что должно произойти)
@@ -98,7 +117,9 @@ npm run build
 - `11` вопросов в test-режиме (требование: `10–12`).
 - Реализовано минимум `5` типов + кастомный `Crossword`.
 - Есть частичная оценка, прогресс, финальный разбор и рекомендации.
+- Добавлены smoke e2e для ключевых пользовательских сценариев (`e2e/smoke.spec.ts`).
+- Добавлен demo checklist: `docs/demo-checklist.md`.
 
 ## Деплой
 
-Деплой не обязателен по условиям курса и в рамках MVP не выполнялся.
+Деплой выполнен на Vercel: https://result-curse-first-project.vercel.app/
