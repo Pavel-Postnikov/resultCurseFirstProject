@@ -1,0 +1,314 @@
+{
+  "id": "ts-typing",
+  "topic": "TypeScript: система типов",
+  "description": "Погружение в типизацию TypeScript — от базовых аннотаций до дженериков и утилитарных типов. Для тех, кто уже знает JS и хочет уверенно писать на TS.",
+  "estimatedMinutes": 25,
+  "checkpoints": [
+    {
+      "id": "cp-1",
+      "order": 1,
+      "title": "Базовые типы и аннотации",
+      "theory": "TypeScript добавляет статическую типизацию поверх JavaScript. Ты явно указываешь, какого типа значение ожидает переменная, параметр или возвращаемое значение функции.\n\nОсновные примитивные типы: `string`, `number`, `boolean`, `null`, `undefined`, `symbol`. Есть также `any` — тип, который отключает проверку (лучше избегать), и `unknown` — безопасная альтернатива `any`, требующая проверки перед использованием.\n\nАннотации пишутся через двоеточие:\n```ts\nconst name: string = 'Alice';\nfunction greet(name: string): string {\n  return `Hello, ${name}`;\n}\n```\n\nTS умеет **выводить типы** (type inference) — если ты пишешь `const x = 42`, он сам поймёт что `x: number`. Явные аннотации нужны там, где вывод невозможен или ты хочешь быть точнее.",
+      "timeLimit": 180,
+      "xpReward": 100,
+      "exercises": [
+        {
+          "id": "ex-cp1-1",
+          "type": "multiple-choice",
+          "question": "Что выведет TypeScript при попытке скомпилировать этот код?\n```ts\nlet age: number = '25';\n```",
+          "explanation": "TypeScript выдаст ошибку типов: строку нельзя присвоить переменной с типом number. Это именно то, ради чего нужна статическая типизация — ловить такие ошибки до запуска.",
+          "difficulty": "easy",
+          "payload": {
+            "options": [
+              { "id": "a", "text": "Код выполнится, age будет строкой '25'" },
+              { "id": "b", "text": "Ошибку типов при компиляции" },
+              { "id": "c", "text": "age автоматически преобразуется в число 25" },
+              { "id": "d", "text": "Код выполнится, age будет undefined" }
+            ],
+            "correctOptionIds": ["b"],
+            "allowMultiple": false
+          }
+        },
+        {
+          "id": "ex-cp1-2",
+          "type": "true-false",
+          "question": "Тип `unknown` безопаснее чем `any`, потому что перед использованием значения нужно проверить его тип.",
+          "explanation": "Верно. С `any` можно делать что угодно без проверок. С `unknown` TypeScript требует сначала убедиться в типе через typeof, instanceof или type guard — это предотвращает случайные ошибки.",
+          "difficulty": "easy",
+          "payload": {
+            "statement": "Тип `unknown` безопаснее чем `any`, потому что перед использованием значения нужно проверить его тип.",
+            "correct": true
+          }
+        },
+        {
+          "id": "ex-cp1-3",
+          "type": "fill-the-blank",
+          "question": "Заполни аннотации типов:",
+          "explanation": "string — для текстовых значений, number — для чисел, boolean — для булевых. TypeScript мог бы вывести эти типы сам, но явные аннотации делают код самодокументируемым.",
+          "difficulty": "easy",
+          "payload": {
+            "template": "const username: {{blank_1}} = 'Pavel';\nconst score: {{blank_2}} = 100;\nconst isActive: {{blank_3}} = true;",
+            "blanks": [
+              { "id": "blank_1", "answers": ["string"], "caseSensitive": false },
+              { "id": "blank_2", "answers": ["number"], "caseSensitive": false },
+              { "id": "blank_3", "answers": ["boolean"], "caseSensitive": false }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "cp-2",
+      "order": 2,
+      "title": "Объекты, массивы и union-типы",
+      "theory": "Для объектов TypeScript использует **интерфейсы** (`interface`) или **псевдонимы типов** (`type`). Оба описывают форму объекта:\n```ts\ninterface User {\n  id: number;\n  name: string;\n  email?: string; // необязательное поле\n}\n```\n\nМассивы типизируются двумя способами: `string[]` или `Array<string>` — они эквивалентны.\n\n**Union-тип** (`|`) позволяет значению быть одним из нескольких типов:\n```ts\ntype Status = 'active' | 'inactive' | 'banned';\nlet id: string | number = 42;\nid = 'abc'; // тоже OK\n```\n\nUnion особенно полезны для параметров функций, которые принимают несколько форматов данных.",
+      "timeLimit": 210,
+      "xpReward": 130,
+      "exercises": [
+        {
+          "id": "ex-cp2-1",
+          "type": "multiple-choice",
+          "question": "Какой из вариантов корректно описывает необязательное поле `age` в интерфейсе?",
+          "explanation": "Знак `?` после имени поля делает его необязательным — TypeScript не будет требовать его при создании объекта. Тип поля при этом становится `number | undefined`.",
+          "difficulty": "easy",
+          "payload": {
+            "options": [
+              { "id": "a", "text": "age: number | null" },
+              { "id": "b", "text": "age?: number" },
+              { "id": "c", "text": "age: optional<number>" },
+              { "id": "d", "text": "age: number = undefined" }
+            ],
+            "correctOptionIds": ["b"],
+            "allowMultiple": false
+          }
+        },
+        {
+          "id": "ex-cp2-2",
+          "type": "spot-the-bug",
+          "question": "Этот код не компилируется. Найди строку с ошибкой типов:",
+          "explanation": "Строка 5: поле `role` не объявлено в интерфейсе `User`. TypeScript не позволяет добавлять поля, которых нет в типе объекта — это защищает от опечаток и случайных полей.",
+          "difficulty": "medium",
+          "payload": {
+            "lines": [
+              "interface User {",
+              "  id: number;",
+              "  name: string;",
+              "}",
+              "const user: User = { id: 1, name: 'Alice', role: 'admin' };"
+            ],
+            "bugLineIndex": 4,
+            "hint": "Посмотри какие поля описаны в интерфейсе User."
+          }
+        },
+        {
+          "id": "ex-cp2-3",
+          "type": "true-false",
+          "question": "Тип `string[]` и `Array<string>` — это разные типы с разным поведением.",
+          "explanation": "Неверно. `string[]` и `Array<string>` — полностью эквивалентные записи одного и того же типа. Это просто два синтаксиса для одного и того же — выбор между ними вопрос стиля.",
+          "difficulty": "easy",
+          "payload": {
+            "statement": "Тип `string[]` и `Array<string>` — это разные типы с разным поведением.",
+            "correct": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "cp-3",
+      "order": 3,
+      "title": "Дженерики (Generics)",
+      "theory": "Дженерики — это параметры типов, позволяющие писать гибкий и переиспользуемый код без потери типобезопасности.\n\n```ts\nfunction identity<T>(value: T): T {\n  return value;\n}\nidentity<string>('hello'); // T = string\nidentity<number>(42);      // T = number\n```\n\nБез дженериков пришлось бы либо писать перегрузки для каждого типа, либо использовать `any` и терять типобезопасность.\n\nДженерики широко используются в стандартных типах: `Array<T>`, `Promise<T>`, `Record<K, V>`. Можно также **ограничивать** параметр типа через `extends`:\n```ts\nfunction getLength<T extends { length: number }>(item: T): number {\n  return item.length;\n}\n```\nЭто гарантирует, что у `T` есть поле `length`.",
+      "timeLimit": 240,
+      "xpReward": 150,
+      "exercises": [
+        {
+          "id": "ex-cp3-1",
+          "type": "fill-the-blank",
+          "question": "Допиши дженерик-функцию, которая возвращает первый элемент массива:",
+          "explanation": "Параметр типа T позволяет функции работать с массивом любого типа и при этом возвращать значение того же типа. TypeScript выведет T автоматически при вызове.",
+          "difficulty": "medium",
+          "payload": {
+            "template": "function first<{{blank_1}}>(arr: {{blank_2}}[]): T {\n  return arr[0];\n}",
+            "blanks": [
+              { "id": "blank_1", "answers": ["T"], "caseSensitive": true },
+              { "id": "blank_2", "answers": ["T"], "caseSensitive": true }
+            ]
+          }
+        },
+        {
+          "id": "ex-cp3-2",
+          "type": "multiple-choice",
+          "question": "Что означает ограничение `T extends string | number` в дженерике?",
+          "explanation": "Ограничение `extends` сужает допустимые типы для параметра T. Передать объект или массив не получится — TypeScript выдаст ошибку на этапе компиляции.",
+          "difficulty": "medium",
+          "payload": {
+            "options": [
+              { "id": "a", "text": "T наследует методы string и number" },
+              { "id": "b", "text": "T может быть только string или number" },
+              { "id": "c", "text": "Функция принимает только строки, числа игнорируются" },
+              { "id": "d", "text": "T по умолчанию равен string, если не указан" }
+            ],
+            "correctOptionIds": ["b"],
+            "allowMultiple": false
+          }
+        },
+        {
+          "id": "ex-cp3-3",
+          "type": "order-steps",
+          "question": "Расставь шаги в порядке, как TypeScript обрабатывает вызов дженерик-функции:",
+          "explanation": "TypeScript сначала смотрит на аргументы вызова, выводит T из них, проверяет ограничения, и только потом проверяет тело функции с подставленным типом.",
+          "difficulty": "medium",
+          "payload": {
+            "steps": [
+              { "id": "s1", "text": "Компилятор выводит T из переданного аргумента" },
+              { "id": "s2", "text": "Проверяет, удовлетворяет ли T ограничениям (extends)" },
+              { "id": "s3", "text": "Функция вызывается с конкретным типом вместо T" },
+              { "id": "s4", "text": "Проверяется тип возвращаемого значения" }
+            ],
+            "correctOrder": ["s1", "s2", "s3", "s4"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "cp-4",
+      "order": 4,
+      "title": "Утилитарные типы",
+      "theory": "TypeScript поставляется с набором встроенных **утилитарных типов** для трансформации существующих типов.\n\nСамые используемые:\n- `Partial<T>` — делает все поля необязательными\n- `Required<T>` — делает все поля обязательными\n- `Readonly<T>` — запрещает изменение полей\n- `Pick<T, K>` — берёт только указанные поля\n- `Omit<T, K>` — убирает указанные поля\n- `Record<K, V>` — объект с ключами K и значениями V\n\n```ts\ninterface User { id: number; name: string; email: string; }\n\ntype UserPreview = Pick<User, 'id' | 'name'>;\n// { id: number; name: string }\n\ntype UserDraft = Partial<User>;\n// { id?: number; name?: string; email?: string }\n```\n\nЭто позволяет не дублировать похожие интерфейсы, а выводить новые из существующих.",
+      "timeLimit": 240,
+      "xpReward": 150,
+      "exercises": [
+        {
+          "id": "ex-cp4-1",
+          "type": "match-pairs",
+          "question": "Сопоставь утилитарный тип с тем, что он делает:",
+          "explanation": "Каждый утилитарный тип решает конкретную задачу трансформации. Знание их экономит время и делает код выразительнее — не нужно вручную переписывать похожие интерфейсы.",
+          "difficulty": "medium",
+          "payload": {
+            "left": [
+              { "id": "l1", "text": "Partial<T>" },
+              { "id": "l2", "text": "Omit<T, K>" },
+              { "id": "l3", "text": "Record<K, V>" }
+            ],
+            "right": [
+              { "id": "r1", "text": "Создаёт объект с ключами K и значениями V" },
+              { "id": "r2", "text": "Делает все поля необязательными" },
+              { "id": "r3", "text": "Убирает указанные поля из типа" }
+            ],
+            "correctPairs": [
+              { "leftId": "l1", "rightId": "r2" },
+              { "leftId": "l2", "rightId": "r3" },
+              { "leftId": "l3", "rightId": "r1" }
+            ]
+          }
+        },
+        {
+          "id": "ex-cp4-2",
+          "type": "multiple-choice",
+          "question": "Какой утилитарный тип нужно использовать, чтобы создать тип только с полями `id` и `name` из интерфейса `User`?",
+          "explanation": "`Pick<User, 'id' | 'name'>` создаёт новый тип, содержащий только выбранные поля. `Omit` наоборот — исключает поля. `Partial` делает все поля необязательными, но оставляет их все.",
+          "difficulty": "medium",
+          "payload": {
+            "options": [
+              { "id": "a", "text": "Omit<User, 'id' | 'name'>" },
+              { "id": "b", "text": "Partial<User>" },
+              { "id": "c", "text": "Pick<User, 'id' | 'name'>" },
+              { "id": "d", "text": "Required<User>" }
+            ],
+            "correctOptionIds": ["c"],
+            "allowMultiple": false
+          }
+        },
+        {
+          "id": "ex-cp4-3",
+          "type": "spot-the-bug",
+          "question": "Найди строку с ошибкой типов:",
+          "explanation": "Строка 6: `Readonly<User>` запрещает изменение полей после создания объекта. Присвоение `user.name = ...` вызовет ошибку компиляции. Если нужно изменить поле — используй обычный тип без Readonly.",
+          "difficulty": "medium",
+          "payload": {
+            "lines": [
+              "interface User {",
+              "  id: number;",
+              "  name: string;",
+              "}",
+              "const user: Readonly<User> = { id: 1, name: 'Alice' };",
+              "user.name = 'Bob';"
+            ],
+            "bugLineIndex": 5,
+            "hint": "Что делает Readonly с полями объекта?"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cp-5",
+      "order": 5,
+      "title": "Type Guards и narrowing",
+      "theory": "**Narrowing** — это сужение типа в определённой ветке кода. TypeScript анализирует условия и понимает, что внутри `if` тип более конкретный.\n\n```ts\nfunction printId(id: string | number) {\n  if (typeof id === 'string') {\n    console.log(id.toUpperCase()); // здесь id: string\n  } else {\n    console.log(id.toFixed(2));   // здесь id: number\n  }\n}\n```\n\n**Type Guard** — функция, которая явно проверяет тип и сообщает об этом TypeScript через специальный синтаксис возвращаемого значения:\n```ts\nfunction isString(value: unknown): value is string {\n  return typeof value === 'string';\n}\n```\n\nПосле вызова `isString(x)` в `if`-блоке TypeScript знает что `x: string`. Это особенно полезно при работе с `unknown` данными из API.",
+      "timeLimit": 270,
+      "xpReward": 170,
+      "exercises": [
+        {
+          "id": "ex-cp5-1",
+          "type": "true-false",
+          "question": "После проверки `if (typeof x === 'string')` TypeScript внутри этого блока считает `x` типом `string`, даже если снаружи он был `string | number`.",
+          "explanation": "Верно — это и есть narrowing. TypeScript анализирует поток управления и сужает тип переменной внутри условного блока на основе проверок typeof, instanceof, и других.",
+          "difficulty": "easy",
+          "payload": {
+            "statement": "После проверки `if (typeof x === 'string')` TypeScript внутри этого блока считает `x` типом `string`, даже если снаружи он был `string | number`.",
+            "correct": true
+          }
+        },
+        {
+          "id": "ex-cp5-2",
+          "type": "multiple-choice",
+          "question": "Что означает возвращаемый тип `value is string` в функции-type guard?",
+          "explanation": "Синтаксис `value is string` называется type predicate. Он говорит TypeScript: если функция вернула true, то в вызывающем коде считай что value имеет тип string. Без него narrowing не произойдёт.",
+          "difficulty": "medium",
+          "payload": {
+            "options": [
+              { "id": "a", "text": "Функция принимает только строки" },
+              { "id": "b", "text": "Функция возвращает строку" },
+              { "id": "c", "text": "Если функция вернула true — TypeScript сужает тип value до string" },
+              { "id": "d", "text": "value автоматически преобразуется в string" }
+            ],
+            "correctOptionIds": ["c"],
+            "allowMultiple": false
+          }
+        },
+        {
+          "id": "ex-cp5-3",
+          "type": "spot-the-bug",
+          "question": "Функция должна безопасно обработать данные из API. Найди строку с потенциальной ошибкой:",
+          "explanation": "Строка 2: данные из API имеют тип `unknown` — нельзя сразу вызывать `.toUpperCase()` без проверки типа. TypeScript это запретит. Сначала нужно проверить: `if (typeof data === 'string')`.",
+          "difficulty": "hard",
+          "payload": {
+            "lines": [
+              "function processApiResponse(data: unknown) {",
+              "  return data.toUpperCase();",
+              "}"
+            ],
+            "bugLineIndex": 1,
+            "hint": "Что нужно сделать с unknown перед использованием?"
+          }
+        },
+        {
+          "id": "ex-cp5-4",
+          "type": "order-steps",
+          "question": "Расставь шаги для безопасной работы с данными типа `unknown` из API:",
+          "explanation": "Правильный порядок: получить данные, проверить тип через typeof/instanceof или type guard, сузить тип в блоке условия и только затем использовать. Это стандартный паттерн работы с external data.",
+          "difficulty": "medium",
+          "payload": {
+            "steps": [
+              { "id": "s1", "text": "Получить данные с типом unknown" },
+              { "id": "s2", "text": "Проверить тип через typeof или type guard" },
+              { "id": "s3", "text": "Использовать данные внутри if-блока с нужным типом" },
+              { "id": "s4", "text": "Обработать случай неверного типа в else" }
+            ],
+            "correctOrder": ["s1", "s2", "s3", "s4"]
+          }
+        }
+      ]
+    }
+  ]
+}
