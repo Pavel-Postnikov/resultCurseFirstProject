@@ -91,14 +91,13 @@ export function SpotTheBugExercise({
         Нажми на строку с ошибкой
       </div>
 
-      <div className={styles.codeBlock} role="list" aria-label="Строки кода">
+      <div className={styles.codeBlock} aria-label="Строки кода">
         {exercise.payload.lines.map((line, index) => {
           const lineState = getLineState(index);
           return (
             <button
               key={index}
               type="button"
-              role="listitem"
               disabled={!!readonly || !!result}
               onClick={() => handleLineClick(index)}
               className={`${styles.line} ${styles[lineState]}`}

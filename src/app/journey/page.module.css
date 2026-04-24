@@ -21,6 +21,14 @@
   color: var(--accent);
 }
 
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
 .title {
   font-size: 28px;
   font-weight: 800;

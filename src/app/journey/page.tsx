@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getAllJourneys } from "@/lib/journey";
 import { JourneyCard } from "@/components/journey/JourneyCard";
+import { GenerateButton } from "@/components/journey/GenerateButton";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -14,7 +15,10 @@ export default function JourneyListPage() {
     <main className={styles.page}>
       <div className={styles.header}>
         <span className={styles.kicker}>Knowledge Journey</span>
-        <h1 className={styles.title}>Выбери тему для изучения</h1>
+        <div className={styles.titleRow}>
+          <h1 className={styles.title}>Выбери тему для изучения</h1>
+          <GenerateButton />
+        </div>
         <p className={styles.subtitle}>
           Каждая тема — это цепочка чекпоинтов с теорией, упражнениями и таймером.
           Проходи под давлением времени и зарабатывай XP.

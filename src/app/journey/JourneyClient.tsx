@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { ExerciseRenderer } from "@/components/exercises/ExerciseRenderer";
 import { CheckpointTimer } from "@/components/journey/CheckpointTimer";
 import { TheoryRenderer } from "@/components/journey/TheoryRenderer";
@@ -296,9 +297,9 @@ export function JourneyClient({ journey }: Props) {
             <button className={styles.btnPrimary} onClick={startJourney}>
               Пройти заново
             </button>
-            <a href="/" className={styles.btnSecondary}>
+            <Link href="/" className={styles.btnSecondary}>
               На главную
-            </a>
+            </Link>
           </div>
         </div>
       </div>
