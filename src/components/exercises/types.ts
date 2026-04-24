@@ -6,7 +6,8 @@ export type ExerciseType =
   | "fill-the-blank"
   | "true-false"
   | "order-steps"
-  | "crossword";
+  | "crossword"
+  | "spot-the-bug";
 
 export interface ExerciseBase {
   id: string;
@@ -56,13 +57,20 @@ export interface CrosswordPayload {
   }[];
 }
 
+export interface SpotTheBugPayload {
+  lines: string[];
+  bugLineIndex: number;
+  hint?: string;
+}
+
 export type Exercise =
   | (ExerciseBase & { type: "multiple-choice"; payload: MultipleChoicePayload })
   | (ExerciseBase & { type: "match-pairs"; payload: MatchPairsPayload })
   | (ExerciseBase & { type: "fill-the-blank"; payload: FillTheBlankPayload })
   | (ExerciseBase & { type: "true-false"; payload: TrueFalsePayload })
   | (ExerciseBase & { type: "order-steps"; payload: OrderStepsPayload })
-  | (ExerciseBase & { type: "crossword"; payload: CrosswordPayload });
+  | (ExerciseBase & { type: "crossword"; payload: CrosswordPayload })
+  | (ExerciseBase & { type: "spot-the-bug"; payload: SpotTheBugPayload });
 
 export interface MultipleChoiceAnswer {
   selectedOptionIds: string[];
@@ -88,13 +96,18 @@ export interface CrosswordAnswer {
   values: Record<string, string>;
 }
 
+export interface SpotTheBugAnswer {
+  selectedLineIndex: number;
+}
+
 export type ExerciseAnswer =
   | MultipleChoiceAnswer
   | TrueFalseAnswer
   | FillTheBlankAnswer
   | MatchPairsAnswer
   | OrderStepsAnswer
-  | CrosswordAnswer;
+  | CrosswordAnswer
+  | SpotTheBugAnswer;
 
 export interface EvaluationResult {
   isCorrect: boolean;

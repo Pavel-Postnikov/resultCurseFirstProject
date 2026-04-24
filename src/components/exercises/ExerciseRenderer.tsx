@@ -5,6 +5,7 @@ import { FillTheBlankExercise } from "./fill-the-blank/FillTheBlankExercise";
 import { MatchPairsExercise } from "./match-pairs/MatchPairsExercise";
 import { MultipleChoiceExercise } from "./multiple-choice/MultipleChoiceExercise";
 import { OrderStepsExercise } from "./order-steps/OrderStepsExercise";
+import { SpotTheBugExercise } from "./spot-the-bug/SpotTheBugExercise";
 import { TrueFalseExercise } from "./true-false/TrueFalseExercise";
 import type { EvaluationResult, Exercise, ExerciseAnswer, ExerciseMode } from "./types";
 
@@ -74,6 +75,16 @@ export function ExerciseRenderer({ exercise, mode, readonly, onSubmit }: Exercis
     case "crossword":
       return (
         <CrosswordExercise
+          exercise={exercise}
+          mode={mode}
+          readonly={readonly}
+          onSubmit={(answer, result) => onSubmit?.({ exerciseId: exercise.id, answer, result })}
+        />
+      );
+
+    case "spot-the-bug":
+      return (
+        <SpotTheBugExercise
           exercise={exercise}
           mode={mode}
           readonly={readonly}

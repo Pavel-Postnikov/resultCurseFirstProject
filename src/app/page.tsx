@@ -18,11 +18,14 @@ export default function HomePage() {
           подготовки к frontend-собеседованию.
         </p>
         <div className={styles.actions}>
-          <Link href="/articles" className={styles.primary}>
-            Перейти к статьям
+          <Link href="/journey" className={styles.primary}>
+            ⚡ Knowledge Journey
+          </Link>
+          <Link href="/articles" className={styles.secondary}>
+            Статьи
           </Link>
           <Link href="/test" className={styles.secondary}>
-            Открыть test-режим
+            Тест
           </Link>
         </div>
       </section>

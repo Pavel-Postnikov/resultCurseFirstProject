@@ -127,67 +127,71 @@ export function MatchPairsExercise({
       status={status}
       typeLabel="Match Pairs"
     >
-      <div className={styles.layout}>
-        <section className={styles.column}>
-          <h4>Термины</h4>
-          {exercise.payload.left.map((leftItem) => (
-            <div key={leftItem.id} className={styles.leftRow}>
-              <p className={styles.leftText}>{leftItem.text}</p>
+      <div className={styles.grid}>
+        {/* Header row */}
+        <div className={styles.colHeader}>Термины</div>
+        <div className={styles.colHeader}>Определения</div>
 
-              <div
-                className={`${styles.dropZone} ${activeDropLeftId === leftItem.id ? styles.dropZoneActive : ""} ${pairs[leftItem.id] ? styles.dropZoneFilled : ""}`}
-                role="group"
-                aria-label={`Зона соответствия для термина ${leftItem.text}`}
-                tabIndex={0}
-                onDragOver={(event) => {
-                  event.preventDefault();
-                  setActiveDropLeftId(leftItem.id);
-                }}
-                onDragLeave={() => {
-                  if (activeDropLeftId === leftItem.id) {
-                    setActiveDropLeftId(null);
-                  }
-                }}
-                onDrop={(event) => {
-                  event.preventDefault();
-                  const droppedRightId =
-                    event.dataTransfer.getData("text/plain") || draggingRightId;
-                  if (droppedRightId) {
-                    handleDrop(leftItem.id, droppedRightId);
-                  }
-                }}
-              >
-                {pairs[leftItem.id] ? rightMap[pairs[leftItem.id]] : "Перетащи сюда определение"}
+        {/* Paired rows: left[i] and right[i] are in the same grid row */}
+        {exercise.payload.left.map((leftItem, i) => {
+          const rightItem = exercise.payload.right[i];
+          const isUsed = rightItem ? Object.values(pairs).includes(rightItem.id) : false;
+          const isDraggingCurrent = rightItem ? draggingRightId === rightItem.id : false;
+
+          return (
+            <div key={leftItem.id} className={styles.pairRow}>
+              {/* Left cell */}
+              <div className={styles.leftCell}>
+                <p className={styles.leftText}>{leftItem.text}</p>
+
+                <div
+                  className={`${styles.dropZone} ${activeDropLeftId === leftItem.id ? styles.dropZoneActive : ""} ${pairs[leftItem.id] ? styles.dropZoneFilled : ""}`}
+                  role="group"
+                  aria-label={`Зона соответствия для термина ${leftItem.text}`}
+                  tabIndex={0}
+                  onDragOver={(event) => {
+                    event.preventDefault();
+                    setActiveDropLeftId(leftItem.id);
+                  }}
+                  onDragLeave={() => {
+                    if (activeDropLeftId === leftItem.id) {
+                      setActiveDropLeftId(null);
+                    }
+                  }}
+                  onDrop={(event) => {
+                    event.preventDefault();
+                    const droppedRightId =
+                      event.dataTransfer.getData("text/plain") || draggingRightId;
+                    if (droppedRightId) {
+                      handleDrop(leftItem.id, droppedRightId);
+                    }
+                  }}
+                >
+                  {pairs[leftItem.id]
+                    ? rightMap[pairs[leftItem.id]]
+                    : "Перетащи сюда определение"}
+                </div>
+
+                <label className={styles.selectLabel}>
+                  <span>Альтернатива:</span>
+                  <select
+                    value={pairs[leftItem.id] ?? ""}
+                    onChange={(event) => updatePair(leftItem.id, event.target.value)}
+                    disabled={!!readonly || !!result}
+                    aria-label={`Выбери определение для термина ${leftItem.text}`}
+                  >
+                    <option value="">Не выбрано</option>
+                    {exercise.payload.right.map((rItem) => (
+                      <option key={rItem.id} value={rItem.id}>
+                        {rItem.text}
+                      </option>
+                    ))}
+                  </select>
+                </label>
               </div>
 
-              <label className={styles.selectLabel}>
-                <span>Клавиатурная альтернатива:</span>
-                <select
-                  value={pairs[leftItem.id] ?? ""}
-                  onChange={(event) => updatePair(leftItem.id, event.target.value)}
-                  disabled={!!readonly || !!result}
-                  aria-label={`Выбери определение для термина ${leftItem.text}`}
-                >
-                  <option value="">Не выбрано</option>
-                  {exercise.payload.right.map((rightItem) => (
-                    <option key={rightItem.id} value={rightItem.id}>
-                      {rightItem.text}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
-          ))}
-        </section>
-
-        <section className={styles.column}>
-          <h4>Определения (drag-and-drop)</h4>
-          <div className={styles.draggableList}>
-            {exercise.payload.right.map((rightItem) => {
-              const isUsed = Object.values(pairs).includes(rightItem.id);
-              const isDraggingCurrent = draggingRightId === rightItem.id;
-
-              return (
+              {/* Right cell */}
+              {rightItem && (
                 <motion.button
                   key={rightItem.id}
                   layout
@@ -217,10 +221,10 @@ export function MatchPairsExercise({
                 >
                   {rightItem.text}
                 </motion.button>
-              );
-            })}
-          </div>
-        </section>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       <ExerciseActions

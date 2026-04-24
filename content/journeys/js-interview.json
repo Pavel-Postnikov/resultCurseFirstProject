@@ -1,0 +1,342 @@
+{
+  "id": "js-interview-core",
+  "topic": "Подготовка к JavaScript собеседованию — ключевые концепции",
+  "description": "Пройди 5 чекпоинтов и убедись, что понимаешь замыкания, Event Loop, прототипы, this и промисы на уровне, достаточном для технического интервью.",
+  "estimatedMinutes": 22,
+  "checkpoints": [
+    {
+      "id": "cp-1",
+      "order": 1,
+      "title": "Замыкания и область видимости",
+      "theory": "**Замыкание** — это функция, которая сохраняет доступ к переменным из своей лексической области видимости даже после того, как внешняя функция завершила выполнение.\n\nКлючевой момент: переменная не копируется — функция держит **ссылку** на окружение. Именно поэтому изменение переменной снаружи влияет на замыкание.\n\n```js\nfunction makeCounter() {\n  let count = 0;\n  return () => ++count;\n}\nconst counter = makeCounter();\ncounter(); // 1\ncounter(); // 2\n```\n\nЧастая ловушка на собеседовании — цикл с `var` и асинхронным кодом. Потому что `var` не создаёт блочную область видимости, все итерации замыкаются на одну и ту же переменную. Решение: использовать `let` или IIFE.",
+      "timeLimit": 180,
+      "xpReward": 100,
+      "exercises": [
+        {
+          "id": "ex-cp1-1",
+          "type": "multiple-choice",
+          "question": "Что выведет следующий код?\n```js\nfor (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 0);\n}\n```",
+          "explanation": "Все три функции замыкаются на одну переменную i (объявлена через var — нет блочной области видимости). К моменту вызова цикл уже завершён и i === 3. Решение: заменить var на let, тогда каждая итерация получает свою копию i.",
+          "difficulty": "medium",
+          "payload": {
+            "options": [
+              { "id": "a", "text": "0, 1, 2" },
+              { "id": "b", "text": "3, 3, 3" },
+              { "id": "c", "text": "undefined, undefined, undefined" },
+              { "id": "d", "text": "Ошибка выполнения" }
+            ],
+            "correctOptionIds": ["b"],
+            "allowMultiple": false
+          }
+        },
+        {
+          "id": "ex-cp1-2",
+          "type": "true-false",
+          "question": "Оцени утверждение:",
+          "explanation": "Замыкание хранит не значение переменной на момент создания, а живую ссылку на лексическое окружение. Именно поэтому если переменная изменится после создания замыкания — замыкание увидит новое значение.",
+          "difficulty": "easy",
+          "payload": {
+            "statement": "Замыкание сохраняет копию значения переменной в момент своего создания.",
+            "correct": false
+          }
+        },
+        {
+          "id": "ex-cp1-3",
+          "type": "fill-the-blank",
+          "question": "Заполни пропуски:",
+          "explanation": "let создаёт блочную область видимости — каждая итерация цикла получает свою независимую переменную. var же создаёт переменную в области видимости функции, и все итерации делят одну переменную.",
+          "difficulty": "easy",
+          "payload": {
+            "template": "Чтобы каждая итерация цикла получила свою переменную, нужно использовать {{blank_1}} вместо {{blank_2}}.",
+            "blanks": [
+              { "id": "blank_1", "answers": ["let", "const"], "caseSensitive": false },
+              { "id": "blank_2", "answers": ["var"], "caseSensitive": false }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "cp-2",
+      "order": 2,
+      "title": "Event Loop: микротаски и макротаски",
+      "theory": "JavaScript однопоточен, но умеет обрабатывать асинхронный код через **Event Loop**.\n\nПосле выполнения синхронного кода движок сначала очищает очередь **microtasks** (`Promise.then`, `queueMicrotask`, `MutationObserver`), и только потом берёт следующую **macrotask** (`setTimeout`, `setInterval`, события DOM).\n\n```js\nconsole.log('1');\nsetTimeout(() => console.log('2'), 0);\nPromise.resolve().then(() => console.log('3'));\nconsole.log('4');\n// Вывод: 1 → 4 → 3 → 2\n```\n\n**Почему важно знать:** интервьюеры любят давать подобные задачи. Ключ — `Promise.then` (microtask) всегда выполняется раньше `setTimeout` (macrotask), даже с задержкой 0 мс.",
+      "timeLimit": 240,
+      "xpReward": 150,
+      "exercises": [
+        {
+          "id": "ex-cp2-1",
+          "type": "order-steps",
+          "question": "Расставь в правильном порядке выполнения:",
+          "explanation": "Event Loop сначала выполняет весь синхронный код (call stack), затем все microtasks (Promise.then), и только потом следующую macrotask (setTimeout). Это гарантирует что промисы всегда разрешаются до следующего 'тика' таймеров.",
+          "difficulty": "medium",
+          "payload": {
+            "steps": [
+              { "id": "s1", "text": "Promise.resolve().then(...) добавляется в очередь microtasks" },
+              { "id": "s2", "text": "setTimeout(..., 0) добавляется в очередь macrotasks" },
+              { "id": "s3", "text": "Весь синхронный код выполняется до конца" },
+              { "id": "s4", "text": "Очередь microtasks полностью опустошается" },
+              { "id": "s5", "text": "Выполняется следующая macrotask из очереди" }
+            ],
+            "correctOrder": ["s3", "s1", "s2", "s4", "s5"]
+          }
+        },
+        {
+          "id": "ex-cp2-2",
+          "type": "multiple-choice",
+          "question": "Какой будет порядок вывода?\n```js\nsetTimeout(() => console.log('A'), 0);\nPromise.resolve().then(() => console.log('B'));\nconsole.log('C');\n```",
+          "explanation": "C выводится синхронно. Затем Event Loop обрабатывает microtasks — Promise.then выводит B. Только после очистки очереди microtasks выполняется macrotask setTimeout — выводится A.",
+          "difficulty": "medium",
+          "payload": {
+            "options": [
+              { "id": "a", "text": "A → B → C" },
+              { "id": "b", "text": "C → A → B" },
+              { "id": "c", "text": "C → B → A" },
+              { "id": "d", "text": "B → C → A" }
+            ],
+            "correctOptionIds": ["c"],
+            "allowMultiple": false
+          }
+        },
+        {
+          "id": "ex-cp2-3",
+          "type": "match-pairs",
+          "question": "Сопоставь код с порядком выполнения в Event Loop:",
+          "explanation": "Синхронный код выполняется первым — это call stack. Promise.then добавляет microtask, которая выполняется сразу после синхронного блока. setTimeout добавляет macrotask — она ждёт очистки всей очереди microtasks.",
+          "difficulty": "easy",
+          "payload": {
+            "left": [
+              { "id": "l1", "text": "console.log('sync')" },
+              { "id": "l2", "text": "Promise.resolve().then(...)" },
+              { "id": "l3", "text": "setTimeout(..., 0)" }
+            ],
+            "right": [
+              { "id": "r1", "text": "Выполняется первым — синхронный call stack" },
+              { "id": "r2", "text": "Выполняется вторым — microtask после sync" },
+              { "id": "r3", "text": "Выполняется последним — macrotask" }
+            ],
+            "correctPairs": [
+              { "leftId": "l1", "rightId": "r1" },
+              { "leftId": "l2", "rightId": "r2" },
+              { "leftId": "l3", "rightId": "r3" }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "cp-3",
+      "order": 3,
+      "title": "Прототипы и цепочка прототипов",
+      "theory": "Каждый объект в JavaScript имеет скрытое свойство `[[Prototype]]`. Когда ты обращаешься к свойству объекта и оно не найдено — движок идёт по цепочке прототипов вверх.\n\n```js\nconst animal = { breathes: true };\nconst dog = Object.create(animal);\ndog.name = 'Rex';\n\nconsole.log(dog.breathes); // true — найдено в прототипе\nconsole.log(dog.hasOwnProperty('breathes')); // false\n```\n\n**Классы в JS** — это синтаксический сахар над прототипным наследованием. `class Dog extends Animal` под капотом устанавливает прототипную цепочку.\n\nВажно различать:\n- `__proto__` — устаревший способ доступа к прототипу\n- `Object.getPrototypeOf(obj)` — современный стандарт\n- `prototype` — свойство **функций-конструкторов**, не объектов",
+      "timeLimit": 240,
+      "xpReward": 150,
+      "exercises": [
+        {
+          "id": "ex-cp3-1",
+          "type": "true-false",
+          "question": "Оцени утверждение:",
+          "explanation": "В JavaScript классы — это синтаксический сахар. Под капотом они используют прототипное наследование. Метод, объявленный в классе, попадает в prototype конструктора, а не копируется в каждый экземпляр.",
+          "difficulty": "easy",
+          "payload": {
+            "statement": "Классы ES6 полностью заменяют прототипное наследование — они работают иначе под капотом.",
+            "correct": false
+          }
+        },
+        {
+          "id": "ex-cp3-2",
+          "type": "multiple-choice",
+          "question": "Что вернёт `dog.hasOwnProperty('breathes')`, если `dog` создан через `Object.create(animal)` и `breathes` определено только в `animal`?",
+          "explanation": "hasOwnProperty возвращает true только если свойство определено непосредственно на объекте, а не унаследовано через цепочку прототипов. Свойство breathes находится в animal (прототипе dog), поэтому результат — false.",
+          "difficulty": "medium",
+          "payload": {
+            "options": [
+              { "id": "a", "text": "true" },
+              { "id": "b", "text": "false" },
+              { "id": "c", "text": "undefined" },
+              { "id": "d", "text": "Ошибка: свойство не существует" }
+            ],
+            "correctOptionIds": ["b"],
+            "allowMultiple": false
+          }
+        },
+        {
+          "id": "ex-cp3-3",
+          "type": "match-pairs",
+          "question": "Сопоставь термин с его значением:",
+          "explanation": "Важно не путать: prototype — свойство функций, указывает что станет [[Prototype]] для создаваемых экземпляров. __proto__ — устаревший геттер для [[Prototype]] любого объекта. Object.getPrototypeOf() — современный стандартный способ получить прототип.",
+          "difficulty": "medium",
+          "payload": {
+            "left": [
+              { "id": "l1", "text": "Function.prototype" },
+              { "id": "l2", "text": "Object.getPrototypeOf(obj)" },
+              { "id": "l3", "text": "Object.create(proto)" }
+            ],
+            "right": [
+              { "id": "r1", "text": "Создаёт объект с указанным прототипом" },
+              { "id": "r2", "text": "Объект, который станет [[Prototype]] для new-экземпляров" },
+              { "id": "r3", "text": "Современный способ получить [[Prototype]] объекта" }
+            ],
+            "correctPairs": [
+              { "leftId": "l1", "rightId": "r2" },
+              { "leftId": "l2", "rightId": "r3" },
+              { "leftId": "l3", "rightId": "r1" }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "cp-4",
+      "order": 4,
+      "title": "this и контекст вызова",
+      "theory": "`this` в JavaScript — одна из самых частых тем на собеседовании. Значение `this` определяется **в момент вызова**, а не в момент объявления функции.\n\n**4 правила определения this:**\n1. **Обычный вызов** `fn()` → `this` = `undefined` (strict mode) или `window`\n2. **Метод объекта** `obj.fn()` → `this` = `obj`\n3. **new** `new Fn()` → `this` = новый объект\n4. **Явная привязка** `fn.call(ctx)` / `fn.apply(ctx)` / `fn.bind(ctx)` → `this` = `ctx`\n\n**Стрелочные функции** — исключение: у них нет своего `this`. Они берут `this` из лексического окружения (из места, где были объявлены).\n\n```js\nconst obj = {\n  name: 'Pavel',\n  greet() {\n    setTimeout(() => console.log(this.name), 100);\n  }\n};\nobj.greet(); // 'Pavel' — стрелка берёт this от greet\n```",
+      "timeLimit": 240,
+      "xpReward": 150,
+      "exercises": [
+        {
+          "id": "ex-cp4-1",
+          "type": "multiple-choice",
+          "question": "Что выведет код?\n```js\nconst obj = {\n  value: 42,\n  getValue: function() { return this.value; }\n};\nconst fn = obj.getValue;\nconsole.log(fn());\n```",
+          "explanation": "При вызове fn() функция теряет привязку к объекту — это обычный вызов. В strict mode this === undefined (ошибка), без strict mode this === window/global. window.value не определено → undefined. Чтобы сохранить контекст, используют bind: const fn = obj.getValue.bind(obj).",
+          "difficulty": "hard",
+          "payload": {
+            "options": [
+              { "id": "a", "text": "42" },
+              { "id": "b", "text": "undefined" },
+              { "id": "c", "text": "null" },
+              { "id": "d", "text": "TypeError" }
+            ],
+            "correctOptionIds": ["b"],
+            "allowMultiple": false
+          }
+        },
+        {
+          "id": "ex-cp4-2",
+          "type": "true-false",
+          "question": "Оцени утверждение:",
+          "explanation": "Стрелочные функции не имеют собственного this — они захватывают this из лексического окружения в момент объявления. Это делает их удобными для колбэков, но они не подходят как методы объектов или конструкторы.",
+          "difficulty": "easy",
+          "payload": {
+            "statement": "У стрелочной функции нет собственного this — она использует this из окружения, где была объявлена.",
+            "correct": true
+          }
+        },
+        {
+          "id": "ex-cp4-3",
+          "type": "order-steps",
+          "question": "Расставь правила определения this по приоритету (от высшего к низшему):",
+          "explanation": "new имеет наивысший приоритет — создаёт новый объект. Затем явная привязка через call/apply/bind. Ниже — неявная привязка через вызов как метод объекта. Последнее — обычный вызов функции (this === undefined или window).",
+          "difficulty": "medium",
+          "payload": {
+            "steps": [
+              { "id": "s1", "text": "Обычный вызов: fn() → this = undefined / window" },
+              { "id": "s2", "text": "Явная привязка: fn.call(ctx) → this = ctx" },
+              { "id": "s3", "text": "new: new Fn() → this = новый объект" },
+              { "id": "s4", "text": "Метод объекта: obj.fn() → this = obj" }
+            ],
+            "correctOrder": ["s3", "s2", "s4", "s1"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "cp-5",
+      "order": 5,
+      "title": "Промисы и async/await",
+      "theory": "**Promise** — объект, представляющий результат асинхронной операции. Три состояния: `pending` → `fulfilled` или `rejected`.\n\nОсновные методы:\n- `Promise.all([...])` — ждёт все, завершается с ошибкой при первом reject\n- `Promise.allSettled([...])` — ждёт все, не падает на ошибках\n- `Promise.race([...])` — разрешается/отклоняется первым завершившимся\n- `Promise.any([...])` — разрешается первым fulfilled, ошибка если все rejected\n\n**async/await** — синтаксический сахар над промисами. `await` приостанавливает выполнение async-функции до разрешения промиса.\n\n```js\nasync function fetchUser(id) {\n  try {\n    const res = await fetch(`/api/users/${id}`);\n    return await res.json();\n  } catch (err) {\n    console.error('Ошибка:', err);\n  }\n}\n```\n\nВажно: `await` можно использовать только внутри `async`-функции. Ошибки обрабатываются через `try/catch` или `.catch()` на возвращаемом промисе.",
+      "timeLimit": 300,
+      "xpReward": 200,
+      "exercises": [
+        {
+          "id": "ex-cp5-1",
+          "type": "match-pairs",
+          "question": "Сопоставь метод Promise с его поведением:",
+          "explanation": "Ключевое различие: Promise.all падает при первой ошибке, Promise.allSettled всегда дожидается всех. Promise.race реагирует на первый результат (любой), Promise.any — только на первый успех.",
+          "difficulty": "medium",
+          "payload": {
+            "left": [
+              { "id": "l1", "text": "Promise.all()" },
+              { "id": "l2", "text": "Promise.allSettled()" },
+              { "id": "l3", "text": "Promise.race()" },
+              { "id": "l4", "text": "Promise.any()" }
+            ],
+            "right": [
+              { "id": "r1", "text": "Ждёт все, даёт статус каждого" },
+              { "id": "r2", "text": "Первый fulfilled, иначе AggregateError" },
+              { "id": "r3", "text": "Ждёт все, падает при первом reject" },
+              { "id": "r4", "text": "Первый завершившийся (fulfilled или rejected)" }
+            ],
+            "correctPairs": [
+              { "leftId": "l1", "rightId": "r3" },
+              { "leftId": "l2", "rightId": "r1" },
+              { "leftId": "l3", "rightId": "r4" },
+              { "leftId": "l4", "rightId": "r2" }
+            ]
+          }
+        },
+        {
+          "id": "ex-cp5-2",
+          "type": "true-false",
+          "question": "Оцени утверждение:",
+          "explanation": "async/await — это синтаксический сахар над промисами. async-функция всегда возвращает Promise. await можно использовать только внутри async-функции (или на верхнем уровне модуля в современном JS).",
+          "difficulty": "easy",
+          "payload": {
+            "statement": "async/await полностью заменяет промисы — под капотом они работают на другом механизме.",
+            "correct": false
+          }
+        },
+        {
+          "id": "ex-cp5-3",
+          "type": "multiple-choice",
+          "question": "Что произойдёт если в `Promise.all([p1, p2, p3])` промис `p2` завершится с ошибкой?",
+          "explanation": "Promise.all — это «всё или ничего». При первом же rejected-промисе весь Promise.all немедленно отклоняется с той же ошибкой. p1 и p3 продолжают выполняться (их нельзя отменить), но их результаты игнорируются. Для получения всех результатов вне зависимости от ошибок — используй Promise.allSettled.",
+          "difficulty": "medium",
+          "payload": {
+            "options": [
+              { "id": "a", "text": "Promise.all дожидается p1 и p3, затем возвращает частичный результат" },
+              { "id": "b", "text": "Promise.all немедленно отклоняется с ошибкой от p2" },
+              { "id": "c", "text": "Promise.all игнорирует ошибку и возвращает результаты p1 и p3" },
+              { "id": "d", "text": "Выбрасывается синхронное исключение" }
+            ],
+            "correctOptionIds": ["b"],
+            "allowMultiple": false
+          }
+        },
+        {
+          "id": "ex-cp5-4",
+          "type": "fill-the-blank",
+          "question": "Заполни пропуски:",
+          "explanation": "async-функция всегда возвращает Promise — даже если внутри нет await. await приостанавливает выполнение функции до разрешения промиса, но не блокирует поток — другой код продолжает работать.",
+          "difficulty": "easy",
+          "payload": {
+            "template": "Функция с ключевым словом {{blank_1}} всегда возвращает {{blank_2}}. Ключевое слово {{blank_3}} можно использовать только внутри неё.",
+            "blanks": [
+              { "id": "blank_1", "answers": ["async"], "caseSensitive": false },
+              { "id": "blank_2", "answers": ["Promise", "промис"], "caseSensitive": false },
+              { "id": "blank_3", "answers": ["await"], "caseSensitive": false }
+            ]
+          }
+        },
+        {
+          "id": "ex-cp5-5",
+          "type": "spot-the-bug",
+          "question": "Эта функция должна вернуть данные из API, но работает неправильно. Найди строку с ошибкой:",
+          "explanation": "Строка 3: внутри async-функции используется `.then()` вместо `await`. Это означает, что функция возвращает промис немедленно, не дожидаясь ответа — `data` будет `undefined`. Правильно: `const data = await fetch(url).then(r => r.json());` или разбить на два await.",
+          "difficulty": "medium",
+          "payload": {
+            "lines": [
+              "async function loadUser(id) {",
+              "  const url = `/api/users/${id}`;",
+              "  const data = fetch(url).then(r => r.json());",
+              "  return data.name;",
+              "}"
+            ],
+            "bugLineIndex": 2,
+            "hint": "Вернёт ли fetch() данные сразу или нужно подождать?"
+          }
+        }
+      ]
+    }
+  ]
+}

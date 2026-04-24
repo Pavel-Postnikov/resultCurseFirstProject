@@ -1,21 +1,27 @@
-.layout {
+/* Единая сетка: каждая строка = одна пара. Выравнивание гарантировано. */
+.grid {
   display: grid;
-  gap: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: 1fr 1fr;
+  column-gap: 16px;
+  row-gap: 10px;
 }
 
-.column {
-  display: grid;
-  gap: 10px;
-}
-
-.column h4 {
-  margin: 0;
+.colHeader {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   color: var(--text-muted);
-  font-size: 14px;
+  padding-bottom: 2px;
 }
 
-.leftRow {
+/* Каждая строка — flex-контейнер из двух ячеек */
+.pairRow {
+  display: contents; /* позволяет дочерним элементам участвовать в родительском grid */
+}
+
+/* Левая ячейка */
+.leftCell {
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 10px;
@@ -56,9 +62,11 @@
 
 .selectLabel {
   display: grid;
-  gap: 6px;
-  font-size: 12px;
+  gap: 4px;
+  font-size: 11px;
   color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .selectLabel select {
@@ -66,6 +74,7 @@
   border-radius: 8px;
   padding: 6px;
   background: white;
+  font-size: 13px;
 }
 
 .selectLabel select:focus-visible {
@@ -73,18 +82,20 @@
   outline-offset: 1px;
 }
 
-.draggableList {
-  display: grid;
-  gap: 8px;
-}
-
+/* Правая ячейка — перетаскиваемый элемент */
 .draggableItem {
   text-align: left;
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 8px 10px;
+  padding: 10px 12px;
   background: white;
   cursor: grab;
+  font-size: 14px;
+  line-height: 1.5;
+  /* растягивается на всю высоту строки чтобы выровняться с leftCell */
+  align-self: stretch;
+  display: flex;
+  align-items: center;
   transition:
     border-color var(--motion-duration-fast) var(--motion-ease-standard),
     box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
@@ -107,4 +118,15 @@
 
 .used {
   opacity: 0.55;
+}
+
+/* На мобильном стекуем колонки */
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .colHeader:last-of-type {
+    display: none;
+  }
 }

@@ -11,6 +11,21 @@ interface ExerciseCardProps {
   children: ReactNode;
 }
 
+function renderQuestion(text: string) {
+  const parts = text.split(/(```[\w]*\n[\s\S]*?```)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith("```")) {
+      const code = part.replace(/^```\w*\n?/, "").replace(/```$/, "");
+      return (
+        <pre key={i} className={styles.questionCode}>
+          <code>{code.trimEnd()}</code>
+        </pre>
+      );
+    }
+    return part ? <span key={i}>{part}</span> : null;
+  });
+}
+
 export function ExerciseCard({
   title,
   question,
@@ -27,7 +42,7 @@ export function ExerciseCard({
           <span className={styles.mode}>{mode === "inline" ? "Inline" : "Test"}</span>
         </div>
         {title ? <h3 className={styles.title}>{title}</h3> : null}
-        <p className={styles.question}>{question}</p>
+        <div className={styles.question}>{renderQuestion(question)}</div>
       </header>
       <div className={styles.body}>{children}</div>
     </section>

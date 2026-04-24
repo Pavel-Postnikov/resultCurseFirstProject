@@ -25,6 +25,7 @@ export default function RootLayout({
               <Link href="/">Главная</Link>
               <Link href="/articles">Статьи</Link>
               <Link href="/test">Тест</Link>
+              <Link href="/journey">Journey</Link>
               <Link href="/results">Результаты</Link>
             </nav>
           </header>

@@ -25,9 +25,11 @@
 # misc
 .DS_Store
 *.pem
+*.mhtml
 .idea
 plan.md
 roadmap-frontend-interview-portal.md
+Практический проект Knowledge Journey.md
 
 # debug
 npm-debug.log*

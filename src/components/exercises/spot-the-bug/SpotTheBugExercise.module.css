@@ -1,0 +1,131 @@
+.instructions {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.codeBlock {
+  display: flex;
+  flex-direction: column;
+  background: #1e293b;
+  border-radius: 10px;
+  overflow: hidden;
+  gap: 0;
+}
+
+.line {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.12s ease;
+  position: relative;
+}
+
+.line:last-child {
+  border-bottom: none;
+}
+
+.line:not(:disabled):hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.line:disabled {
+  cursor: default;
+}
+
+/* States */
+.line.selected {
+  background: rgba(99, 179, 237, 0.15);
+  outline: none;
+}
+
+.line.selected .lineNumber {
+  background: rgba(99, 179, 237, 0.3);
+  color: #90cdf4;
+}
+
+.line.correct {
+  background: rgba(72, 187, 120, 0.15);
+}
+
+.line.correct .lineNumber {
+  background: rgba(72, 187, 120, 0.3);
+  color: #9ae6b4;
+}
+
+.line.wrong {
+  background: rgba(252, 129, 129, 0.15);
+}
+
+.line.wrong .lineNumber {
+  background: rgba(252, 129, 129, 0.3);
+  color: #fc8181;
+}
+
+.line.reveal {
+  background: rgba(246, 173, 85, 0.12);
+}
+
+.line.reveal .lineNumber {
+  background: rgba(246, 173, 85, 0.25);
+  color: #f6ad55;
+}
+
+.lineNumber {
+  flex-shrink: 0;
+  width: 40px;
+  padding: 10px 0;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #4a5568;
+  user-select: none;
+  transition: background 0.12s ease, color 0.12s ease;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lineContent {
+  flex: 1;
+  padding: 10px 14px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  color: #e2e8f0;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.badge {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+.correct .badge {
+  background: rgba(72, 187, 120, 0.25);
+  color: #9ae6b4;
+}
+
+.wrong .badge {
+  background: rgba(252, 129, 129, 0.25);
+  color: #fc8181;
+}
+
+.reveal .badge {
+  background: rgba(246, 173, 85, 0.25);
+  color: #f6ad55;
+}

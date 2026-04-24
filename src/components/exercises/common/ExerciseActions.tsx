@@ -22,16 +22,15 @@ export function ExerciseActions({
         type="button"
         onClick={onCheck}
         disabled={!canCheck}
-        aria-label="Проверить ответ"
+        aria-label="Ответить"
       >
-        Проверить
+        Ответить
       </button>
-      {mode === "inline" ? (
+      {mode === "inline" && canRetry ? (
         <button
           className={styles.secondary}
           type="button"
           onClick={onRetry}
-          disabled={!canRetry}
           aria-label="Попробовать ответить еще раз"
         >
           Попробовать еще

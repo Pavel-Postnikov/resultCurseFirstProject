@@ -6,6 +6,7 @@ import type {
   MatchPairsAnswer,
   MultipleChoiceAnswer,
   OrderStepsAnswer,
+  SpotTheBugAnswer,
   TrueFalseAnswer,
 } from "@/components/exercises/types";
 
@@ -23,6 +24,8 @@ export function getExerciseTypeLabel(type: Exercise["type"]): string {
       return "OrderSteps";
     case "crossword":
       return "Crossword";
+    case "spot-the-bug":
+      return "SpotTheBug";
     default:
       return type;
   }
@@ -87,6 +90,11 @@ export function formatUserAnswerLines(exercise: Exercise, answer: ExerciseAnswer
       );
     }
 
+    case "spot-the-bug": {
+      const typedAnswer = answer as SpotTheBugAnswer;
+      return [`Строка ${typedAnswer.selectedLineIndex + 1}`];
+    }
+
     default: {
       const exhaustive: never = exercise;
       return [String(exhaustive)];
@@ -134,6 +142,10 @@ export function formatCorrectAnswerLines(exercise: Exercise): string[] {
 
     case "crossword": {
       return exercise.payload.words.map((word) => `${word.id.toUpperCase()}: ${word.answer}`);
+    }
+
+    case "spot-the-bug": {
+      return [`Строка ${exercise.payload.bugLineIndex + 1}: ${exercise.payload.lines[exercise.payload.bugLineIndex] ?? "?"}`];
     }
 
     default: {

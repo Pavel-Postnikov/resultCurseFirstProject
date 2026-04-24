@@ -1,0 +1,59 @@
+.timer {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+}
+
+.svg {
+  display: block;
+}
+
+.track {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 4;
+}
+
+.progress {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 4;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.9s linear, stroke 0.3s ease;
+}
+
+.time {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--text);
+  transition: color 0.3s ease;
+}
+
+/* warning: < 60s */
+.warning .progress {
+  stroke: #b45309;
+}
+.warning .time {
+  color: #b45309;
+}
+
+/* urgent: < 30s */
+.urgent .progress {
+  stroke: var(--state-wrong);
+  animation: pulse 0.8s ease-in-out infinite;
+}
+.urgent .time {
+  color: var(--state-wrong);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
